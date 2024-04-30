@@ -12,6 +12,14 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      fontFamily:{
+        navBarFont:["Josefin Sans"],
+        tagFont:["Outfit"]
+      },
+      colors:{
+        'darkRGBA':'rgba(26, 144, 102, 0.8)',
+        'lightRGBA':'rgba(176, 209, 178, 0.68)'
+      }
     },
   },
   plugins: [],
