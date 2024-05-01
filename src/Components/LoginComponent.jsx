@@ -5,12 +5,14 @@ import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useUserContext } from "@/Contexts/UserContext";
+import WarningComponent from "./Sundries/WarningComponent";
 
 export default function LoginComponent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
   const {user , setUser} = useUserContext();
+
   const [info , setInfo] = useState("");
   const [showInfo , setShowInfo] = useState(false);
 
@@ -56,7 +58,8 @@ export default function LoginComponent() {
           id="email"
           onChange={handleEmailChange}
           value={email}
-          className="dark:text-black rounded-full"
+          className="dark:text-black rounded-full w-48 h-7 p-2 text-md"
+          placeholder="Email"
         />
       </div>
       <div className="flex items-center space-x-3">
@@ -67,25 +70,23 @@ export default function LoginComponent() {
           id="pWord"
           onChange={handlePasswordChange}
           value={password}
-          className="dark:text-black rounded-full"
+          className="dark:text-black rounded-full w-48 h-7 p-2 text-md"
+          placeholder="Password"
         />
       </div>
      
       <div className="flex items-center space-x-5">
         <button
-          className="dark:bg-lime-800 bg-green-800 dark:text-gray-200 text-gray-200 w-24 text-lg font-bold p-2 rounded-full"
+          className="dark:bg-amber-700 bg-green-800 dark:text-gray-200 text-gray-200 w-24 text-lg font-bold p-2 rounded-full"
           type="submit"
         >
           Login
         </button>
-        <Link href="#" className="underline hover:italic">
-          Sign Up
+        <Link href="signup" className="underline hover:italic">
+          No Account? Sign Up Here
         </Link>
       </div>
-      {showInfo && (<div className="text-red-700 flex space-x-3">
-        <span>{info}</span>
-        <button className="border border-1 border-red-700 rounded-md" onClick={()=>{setShowInfo(false)}}>Close</button>
-      </div>)}
+      {showInfo && (<WarningComponent info={info} close={()=>{setShowInfo(false)}}/>)}
     </form>
   );
 }

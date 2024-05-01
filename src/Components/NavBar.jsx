@@ -82,9 +82,14 @@ export default function NavBar() {
               )}
               {!isLogin() && (
                 <li>
-                  <Link href="/signin">SignIn</Link>
+                  <Link href="/signup">SignUp</Link>
                 </li>
               )}
+              {/* {isLogin() && user.theRole ==="admin" && ( */}
+                <li>
+                  <Link href="#">Admin</Link>
+                </li>
+              {/* )} */}
             </ul>
           </div>
         </div>
