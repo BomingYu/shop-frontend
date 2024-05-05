@@ -14,7 +14,8 @@ module.exports = {
       },
       fontFamily:{
         navBarFont:["Josefin Sans"],
-        tagFont:["Outfit"]
+        tagFont:["Outfit"],
+        bodyFont:["Lato"]
       },
       colors:{
         'darkRGBA':'rgba(26, 144, 102, 0.8)',
