@@ -17,11 +17,7 @@ export default function Page() {
       setLoading(false);
     };
     getAllProduct();
-  }, []);
-
-  const testButton = () => {
-    console.log(products);
-  };
+  }, [products]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-lightRGBA dark:bg-darkRGBA">
@@ -40,6 +36,7 @@ export default function Page() {
           products.map((product) => (
             <AdminProductCard
               key={product.id}
+              id={product.id}
               imagePath={product.image}
               name={product.name}
               description={product.description}

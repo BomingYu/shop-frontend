@@ -1,12 +1,31 @@
 import Image from "next/image";
 import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
-export default function AdminProductCard({ imagePath, name, description }) {
+export default function AdminProductCard({ id , imagePath, name, description }) {
   const [imgError, setImgError] = useState(false);
+  const router = useRouter();
 
   const handleImageError = () => {
     setImgError(true);
   };
+
+  const handleDeleteProduct = async() => {
+    console.log(id);
+    try{
+      var response = await axios.delete("http://localhost:5006/api/products/"+id);
+      console.log(response.data);
+      router.push("/admin/product");
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+
+  const handleUpdateProduct = () => {
+    router.push("/admin/product/update/"+id);
+  }
 
   return (
     <div className="w-72 h-72 flex items-center justify-center border m-1">
@@ -34,10 +53,10 @@ export default function AdminProductCard({ imagePath, name, description }) {
         </div>
 
         <div className="flex items-center space-x-5 m-3">
-          <button className="bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 text-lg font-bold rounded-full font-bodyFont">
+          <button className="bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 text-lg font-bold rounded-full font-bodyFont" onClick={handleUpdateProduct}>
             Edit
           </button>
-          <button className="bg-red-700 text-lg font-bold font-bodyFont p-2 rounded-full">
+          <button className="bg-red-700 text-lg font-bold font-bodyFont p-2 rounded-full" onClick={handleDeleteProduct}>
             Delete
           </button>
         </div>

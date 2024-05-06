@@ -1,13 +1,14 @@
 "use client";
 
 import axios from "axios";
-//import { headers } from "next/headers";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [desc, setDesc] = useState("");
+  const router = useRouter();
 
   const handleAddNewProduct = async (e) => {
     e.preventDefault(e);
@@ -20,6 +21,7 @@ export default function Page() {
     const response = await axios.post("http://localhost:5006/api/products" , formData , {headers:{"Content-Type": "multipart/form-data"}});
     const data = response.data;
     console.log(data);
+    router.push("/admin/product")
   };
 
   return (
