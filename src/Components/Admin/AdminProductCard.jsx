@@ -61,7 +61,7 @@ export default function AdminProductCard({ id , imagePath, name, description }) 
         </div>
 
         <div className="flex items-center space-x-5 m-3">
-          <button className="bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 text-lg font-bold rounded-full font-bodyFont" onClick={handleUpdateProduct}>
+          <button className="bg-gray-400 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 text-lg font-bold rounded-full font-bodyFont" onClick={handleUpdateProduct}>
             Edit
           </button>
           <button className="bg-red-700 text-lg font-bold font-bodyFont p-2 rounded-full" onClick={handleDeleteProduct}>
