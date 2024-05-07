@@ -1,14 +1,15 @@
 import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import { useRouter } from "next/navigation";
+import { useUserContext } from "@/Contexts/UserContext";
 
 export default function UpdateProductComponent({ id, oldName, oldDesc }) {
   const [name, setName] = useState(oldName);
   const [image, setImage] = useState(null);
   const [desc, setDesc] = useState(oldDesc);
   const router = useRouter();
+  const {user} = useUserContext();
 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault(e);
@@ -23,6 +24,7 @@ export default function UpdateProductComponent({ id, oldName, oldDesc }) {
       {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${user.token}`,
         },
       }
     );

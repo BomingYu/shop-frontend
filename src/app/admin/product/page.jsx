@@ -4,17 +4,27 @@ import AdminProductCard from "@/Components/Admin/AdminProductCard";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useUserContext } from "@/Contexts/UserContext";
 
 export default function Page() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useUserContext();
 
   useEffect(() => {
     const getAllProduct = async () => {
-      const response = await axios.get("http://localhost:5006/api/products");
-      const responseData = response.data;
-      setProducts(responseData);
-      setLoading(false);
+      try {
+        const response = await axios.get("http://localhost:5006/api/products", {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+        const responseData = response.data;
+        setProducts(responseData);
+        setLoading(false);
+      } catch (error) {
+        alert("Something wrong happened!");
+      }
     };
     getAllProduct();
   }, [products]);
@@ -30,19 +40,19 @@ export default function Page() {
           Add New Product
         </Link>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 items-center">
-        {loading ? (
-          <h1>Loading</h1>
-        ) : (
-          products.map((product) => (
-            <AdminProductCard
-              key={product.id}
-              id={product.id}
-              imagePath={product.image}
-              name={product.name}
-              description={product.description}
-            />
-          ))
-        )}
+          {loading ? (
+            <h1 className="text-lg font-bodyFont font-bold">Loading...</h1>
+          ) : (
+            products.map((product) => (
+              <AdminProductCard
+                key={product.id}
+                id={product.id}
+                imagePath={product.image}
+                name={product.name}
+                description={product.description}
+              />
+            ))
+          )}
         </div>
       </div>
     </main>

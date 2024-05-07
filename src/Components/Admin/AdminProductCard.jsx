@@ -2,10 +2,12 @@ import Image from "next/image";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useUserContext } from "@/Contexts/UserContext";
 
 export default function AdminProductCard({ id , imagePath, name, description }) {
   const [imgError, setImgError] = useState(false);
   const router = useRouter();
+  const {user} = useUserContext();
 
   const handleImageError = () => {
     setImgError(true);
@@ -14,7 +16,13 @@ export default function AdminProductCard({ id , imagePath, name, description }) 
   const handleDeleteProduct = async() => {
     console.log(id);
     try{
-      var response = await axios.delete("http://localhost:5006/api/products/"+id);
+      var response = await axios.delete("http://localhost:5006/api/products/"+id,
+        {
+          headers:{
+            Authorization: `Bearer ${user.token}`,
+          }
+        }
+      );
       console.log(response.data);
       router.push("/admin/product");
     }

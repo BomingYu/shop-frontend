@@ -3,14 +3,20 @@
 import UpdateProductComponent from "@/Components/Admin/UpdateProductComponent";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useUserContext } from "@/Contexts/UserContext";
 
 export default function Page({params}){
     const [product , setProduct] = useState({});
     const [loading ,setLoading] = useState(false);
+    const {user} = useUserContext();
 
     useEffect(()=>{
         const getProductById = async() => {
-            const response = await axios.get("http://localhost:5006/api/products/"+params.id);
+            const response = await axios.get("http://localhost:5006/api/products/"+params.id,{
+                headers:{
+                    Authorization: `Bearer ${user.token}`,
+                }
+            });
             const productRes = response.data;
             setProduct(productRes);
             setLoading(false);

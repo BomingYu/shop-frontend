@@ -3,11 +3,13 @@
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUserContext } from "@/Contexts/UserContext";
 
 export default function Page() {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [desc, setDesc] = useState("");
+  const {user} = useUserContext();
   const router = useRouter();
 
   const handleAddNewProduct = async (e) => {
@@ -15,13 +17,22 @@ export default function Page() {
     console.log(name);
     console.log(image);
     console.log(desc);
-    
-    const formData = {name:name , image:image , description:desc};
 
-    const response = await axios.post("http://localhost:5006/api/products" , formData , {headers:{"Content-Type": "multipart/form-data"}});
+    const formData = { name: name, image: image, description: desc };
+
+    const response = await axios.post(
+      "http://localhost:5006/api/products",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
     const data = response.data;
     console.log(data);
-    router.push("/admin/product")
+    router.push("/admin/product");
   };
 
   return (
@@ -48,7 +59,9 @@ export default function Page() {
             <input
               type="file"
               className="dark:text-black rounded-full w-60 h-10 p-2 text-md"
-              onChange={(e)=>{setImage(e.target.files[0])}}
+              onChange={(e) => {
+                setImage(e.target.files[0]);
+              }}
             />
           </div>
           <div className="flex space-x-2 font-tagFont items-center">

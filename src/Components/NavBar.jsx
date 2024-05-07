@@ -18,8 +18,8 @@ export default function NavBar() {
   };
 
   const handleLogout = () => {
-    setUser({});
     router.push("/");
+    setUser({});
   };
 
   return (
