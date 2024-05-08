@@ -1,56 +1,104 @@
 "use client";
 
 import { useState } from "react";
+import SaleUpdateForm from "./SaleUpdateForm";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
-export default function AdminSaleCard() {
+export default function AdminSaleCard({ id, name, available, startAt, endAt }) {
   const [isEdit, setIsEdit] = useState(false);
+  const router = useRouter();
+
+  const convertActive = (avail) => {
+    if (avail === true) {
+      return "Active";
+    } else {
+      return "Inactive";
+    }
+  };
+
+  const convertDate = (date) => {
+    if (date == "" || date == null) {
+      return "Undefined";
+    } else {
+      return date;
+    }
+  };
+
+  const handleDeleteSale = async () => {
+    try {
+      const response = await axios.delete(
+        "http://localhost:5006/api/sales/" + id
+      );
+      router.refresh();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
-    <ul className="flex items-center">
-      <li className="lg:text-2xl md:text-sm sm:text-sm">
-        {isEdit ? <input type="text" /> : "Name"}
-      </li>
-      <li className="lg:text-2xl md:text-sm sm:text-sm">
-        {isEdit ? <input type="text" /> : "Availble"}
-      </li>
-      <li className="lg:text-2xl md:text-sm sm:text-sm">
-        {isEdit ? <input type="date" /> : "Start"}
-      </li>
-      <li className="lg:text-2xl md:text-sm sm:text-sm">
-        {isEdit ? <input type="date" /> : "End"}
-      </li>
+    <div className="border border-slate-800 p-2 rounded-lg">
       {isEdit ? (
-        <li className="lg:text-2xl md:text-sm sm:text-sm flex flex-col space-y-3">
-          <button className="bg-amber-500 text-lg font-bold font-bodyFont p-1 rounded-full">
-            Save
-          </button>
-          <button
-            className="bg-gray-700 text-gray-200 text-lg font-bold font-bodyFont p-1 rounded-full"
-            onClick={() => {
-              setIsEdit(!isEdit);
-            }}
-          >
-            X
-          </button>
-        </li>
+        <SaleUpdateForm
+          id={id}
+          name={name}
+          available={available}
+          startAt={startAt}
+          endAt={endAt}
+          handleCancel={() => setIsEdit(!isEdit)}
+        />
       ) : (
-        <li className="lg:text-2xl md:text-sm sm:text-sm">
-          <button
-            className="bg-gray-400 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-1 text-lg font-bold rounded-full font-bodyFont"
-            onClick={() => {
-              setIsEdit(!isEdit);
-            }}
+        <ul
+          className={`flex items-center justify-center lg:space-x-10 md:space-x-7 sm:space-x-3 xs:space-x-2 font-bodyFont`}
+        >
+          <li className="lg:text-2xl md:text-lg sm:text-sm xs:text-sm w-36 truncate">
+            {name}
+          </li>
+          <li
+            className={`lg:text-2xl md:text-lg sm:text-sm xs:text-sm w-24 ${
+              available ? `text-cyan-900` : `text-red-700`
+            } font-semibold`}
           >
-            Edit
-          </button>
-        </li>
+            {convertActive(available)}
+          </li>
+          <li className="lg:text-2xl md:text-lg sm:text-sm xs:text-sm w-36">
+            {convertDate(startAt)}
+          </li>
+          <li className="lg:text-2xl md:text-lg sm:text-sm xs:text-sm w-8">
+            TO
+          </li>
+          <li
+            className={`lg:text-2xl md:text-lg sm:text-sm xs:text-sm w-36 ${
+              convertDate(endAt) == "Undefined" && `text-red-700 font-bold`
+            }`}
+          >
+            {convertDate(endAt)}
+          </li>
+          <li className="lg:text-2xl md:text-lg sm:text-sm xs:text-sm">
+            <button
+              className="bg-gray-400 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-1 text-lg font-bold rounded-full font-bodyFont"
+              onClick={() => {
+                setIsEdit(!isEdit);
+              }}
+            >
+              Edit
+            </button>
+          </li>
+          <li className="lg:text-2xl md:text-sm">
+            <button
+              className="bg-red-700 text-lg font-bold font-bodyFont p-1 rounded-full"
+              onClick={handleDeleteSale}
+            >
+              Delete
+            </button>
+          </li>
+          <li className="lg:text-2xl md:text-sm">
+            <button className="bg-amber-500 text-lg font-bold font-bodyFont p-1 rounded-full">
+              View
+            </button>
+          </li>
+        </ul>
       )}
-
-      <li className="lg:text-2xl md:text-sm sm:text-sm">
-        <button className="bg-red-700 text-lg font-bold font-bodyFont p-2 rounded-full">
-          Delete
-        </button>
-      </li>
-    </ul>
+    </div>
   );
 }
