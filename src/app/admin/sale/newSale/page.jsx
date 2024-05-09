@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import WarningComponent from "@/Components/Sundries/WarningComponent";
 
 export default function Page() {
   const [name, setName] = useState("");
@@ -12,37 +13,68 @@ export default function Page() {
   const [end, setEnd] = useState("");
   const router = useRouter();
 
-  const handleSubmitNewSale = async (e) => {
-    e.preventDefault();
-    console.log(name);
-    console.log(validSale);
-    console.log(start);
-    console.log(end);
-    const formData = {
-      name: name,
-      isAvailable: validSale,
-      startAt: start,
-      endAt: end,
-    };
-    const response = await axios.post(
-      "http://localhost:5006/api/sales",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-    const data = response.data;
-    console.log(data);
-    router.push("/admin/sale")
+  const [error, setError] = useState("");
+  const [errorShow, setErrorShow] = useState(false);
+
+  const handleStartChange = (e) => {
+    if (end && e.target.value > end) {
+      setError("Start date cannot be later than end date");
+      setErrorShow(true);
+      setStart("");
+    } else {
+      setStart(e.target.value);
+    }
   };
 
+  const handleEndChange = (e) => {
+    if (start && e.target.value < start) {
+      setError("End date cannot be earlier than start date");
+      setErrorShow(true);
+      setEnd("");
+    } else {
+      setEnd(e.target.value);
+    }
+  };
+
+  const handleSubmitNewSale = async (e) => {
+    e.preventDefault();
+    if (start !== "") {
+      const formData = {
+        name: name,
+        isAvailable: validSale,
+        startAt: start,
+        endAt: end,
+      };
+      const response = await axios.post(
+        "http://localhost:5006/api/sales",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      const data = response.data;
+      console.log(data);
+      router.push("/admin/sale");
+    } else {
+      setError("Start date connot be empty");
+      setErrorShow(true);
+    }
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-lightRGBA dark:bg-darkRGBA">
-      <div className="font-tagFont">
+      <div className="font-tagFont flex flex-col space-y-5 items-center justify-center">
         <h1 className="text-5xl font-bold">New Sales</h1>
+        {errorShow && (
+          <WarningComponent
+            info={error}
+            close={() => {
+              setErrorShow(false);
+            }}
+          />
+        )}
         <form
           className="mt-10 flex flex-col space-y-5 items-center justify-center"
           onSubmit={handleSubmitNewSale}
@@ -76,9 +108,7 @@ export default function Page() {
               type="date"
               className="dark:text-black rounded-full w-48 h-8 p-2 text-md"
               value={start}
-              onChange={(e) => {
-                setStart(e.target.value);
-              }}
+              onChange={handleStartChange}
             />
           </div>
           <div className="flex space-x-2 items-center justify-center">
@@ -87,9 +117,7 @@ export default function Page() {
               type="date"
               className="dark:text-black rounded-full w-48 h-8 p-2 text-md"
               value={end}
-              onChange={(e) => {
-                setEnd(e.target.value);
-              }}
+              onChange={handleEndChange}
             />
           </div>
           <div className="flex items-center justify-center space-x-10">

@@ -1,24 +1,76 @@
 "use client";
 
+import WarningComponent from "@/Components/Sundries/WarningComponent";
+import axios from "axios";
 import { useState } from "react";
 
-export default function SaleUpdateForm({id , name , available , startAt , endAt , handleCancel}) {
+export default function SaleUpdateForm({
+  id,
+  name,
+  available,
+  startAt,
+  endAt,
+  handleCancel,
+}) {
   const [nameValue, setName] = useState(name);
   const [validSale, setValidSale] = useState(available);
   const [start, setStart] = useState(startAt);
   const [end, setEnd] = useState(endAt);
 
-  const handleUpdateSale = (e) => {
+  const [error, setError] = useState("");
+  const [errorShow, setErrorShow] = useState(true);
+
+  const handleStartChange = (e) => {
+    if (end && e.target.value > end) {
+      setError("Start date cannot be later than end date");
+      setErrorShow(true);
+      setStart("");
+    } else {
+      setStart(e.target.value);
+    }
+  };
+
+  const handleEndChange = (e) => {
+    if (start && e.target.value < start) {
+      setError("End date cannot be earlier than start date");
+      setErrorShow(true);
+      setEnd("");
+    } else {
+      setEnd(e.target.value);
+    }
+  };
+
+  const handleUpdateSale = async (e) => {
     e.preventDefault();
-    console.log(nameValue);
-    console.log(validSale);
-    console.log(start);
-    console.log(end);
+    if(start !== ""){
+      const formData = {
+        name: nameValue,
+        isAvailable: validSale,
+        startAt: start,
+        endAt: end,
+      };
+      const response = await axios.put(
+        "http://localhost:5006/api/sales/" + id,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(formData);
+      console.log(response.data);
+      handleCancel();
+    }
+    else{
+      setError("Start date cannot be empty");
+      setErrorShow(true);
+    }
   };
 
   const handleCancelButton = () => {
     handleCancel();
-  }
+  };
 
   return (
     <form
@@ -47,13 +99,21 @@ export default function SaleUpdateForm({id , name , available , startAt , endAt 
           {validSale ? "Active" : "Inactive"}
         </span>
       </div>
+      {errorShow && (
+        <WarningComponent
+          info={error}
+          close={() => {
+            setErrorShow(false);
+          }}
+        />
+      )}
       <div className="flex space-x-3">
         <span className="w-24 text-right">Start</span>
         <input
           type="date"
           className="rounded-full p-1"
           value={start}
-          onChange={(e) => setStart(e.target.value)}
+          onChange={handleStartChange}
         />
       </div>
       <div className="flex space-x-3">
@@ -62,7 +122,7 @@ export default function SaleUpdateForm({id , name , available , startAt , endAt 
           type="date"
           className="rounded-full p-1"
           value={end}
-          onChange={(e) => setEnd(e.target.value)}
+          onChange={handleEndChange}
         />
       </div>
       <div className="flex space-x-3">
