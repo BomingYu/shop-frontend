@@ -30,7 +30,7 @@ export default function Page() {
           sales.map((sale) => (
             <AdminSaleCard
               key={sale.id}
-              id={sale.id}
+              saleId={sale.id}
               name={sale.name}
               available={sale.isAvailable}
               startAt={sale.startAt}

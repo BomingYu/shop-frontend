@@ -18,7 +18,7 @@ export default function SaleUpdateForm({
   const [end, setEnd] = useState(endAt);
 
   const [error, setError] = useState("");
-  const [errorShow, setErrorShow] = useState(true);
+  const [errorShow, setErrorShow] = useState(false);
 
   const handleStartChange = (e) => {
     if (end && e.target.value > end) {

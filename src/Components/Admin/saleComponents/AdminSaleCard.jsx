@@ -4,8 +4,9 @@ import { useState } from "react";
 import SaleUpdateForm from "./SaleUpdateForm";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-export default function AdminSaleCard({ id, name, available, startAt, endAt }) {
+export default function AdminSaleCard({ saleId, name, available, startAt, endAt }) {
   const [isEdit, setIsEdit] = useState(false);
   const router = useRouter();
 
@@ -28,7 +29,7 @@ export default function AdminSaleCard({ id, name, available, startAt, endAt }) {
   const handleDeleteSale = async () => {
     try {
       const response = await axios.delete(
-        "http://localhost:5006/api/sales/" + id
+        "http://localhost:5006/api/sales/" + saleId
       );
       router.refresh();
     } catch (error) {
@@ -93,9 +94,9 @@ export default function AdminSaleCard({ id, name, available, startAt, endAt }) {
             </button>
           </li>
           <li className="lg:text-2xl md:text-sm">
-            <button className="bg-amber-500 text-lg font-bold font-bodyFont p-1 rounded-full">
+            <Link href={`/admin/sale/${saleId}`} className="bg-amber-500 text-lg font-bold font-bodyFont p-1 rounded-full">
               View
-            </button>
+            </Link>
           </li>
         </ul>
       )}
