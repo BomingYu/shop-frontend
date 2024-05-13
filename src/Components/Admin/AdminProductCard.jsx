@@ -36,7 +36,7 @@ export default function AdminProductCard({ id , imagePath, name, description }) 
   }
 
   return (
-    <div className="w-72 h-72 flex items-center justify-center border m-1">
+    <div className="w-72 h-72 flex items-center justify-center border m-1 rounded-lg">
       <div className="flex flex-col items-center justify-center space-y-2 w-[180px] h-[200px]">
         <div className="image-container">
           <Image
