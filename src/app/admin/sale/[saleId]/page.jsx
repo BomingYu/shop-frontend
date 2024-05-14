@@ -54,7 +54,7 @@ export default function Page({ params }) {
                 key={item.id}
                 id={item.id}
                 name={item.product.name}
-                desc={item.product.description}
+                desc={item.description}
                 price={item.price}
                 unit={item.unit}
                 imgPath={item.product.image}
