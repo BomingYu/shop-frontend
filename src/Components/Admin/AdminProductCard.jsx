@@ -54,12 +54,6 @@ export default function AdminProductCard({ id , imagePath, name, description }) 
             {name}
           </h2>
         </div>
-        <div className="w-full items-center justify-center">
-          <span className="block text-center w-full truncate">
-            {description}
-          </span>
-        </div>
-
         <div className="flex items-center space-x-5 m-3">
           <button className="bg-gray-400 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 text-lg font-bold rounded-full font-bodyFont" onClick={handleUpdateProduct}>
             Edit

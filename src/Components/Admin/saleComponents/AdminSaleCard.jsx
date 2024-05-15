@@ -41,7 +41,7 @@ export default function AdminSaleCard({ saleId, name, available, startAt, endAt 
     <div className="border border-slate-800 p-2 rounded-lg">
       {isEdit ? (
         <SaleUpdateForm
-          id={id}
+          id={saleId}
           name={name}
           available={available}
           startAt={startAt}

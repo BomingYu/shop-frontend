@@ -49,7 +49,6 @@ export default function Page() {
                 id={product.id}
                 imagePath={product.image}
                 name={product.name}
-                description={product.description}
               />
             ))
           )}

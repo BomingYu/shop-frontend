@@ -130,10 +130,10 @@ export default function Page({ params }) {
                 Add
               </button>
               <Link
-                href="#"
+                href={`/admin/sale/${params.saleId}`}
                 className="bg-gray-700 text-lg font-bold p-2 text-white rounded-full w-20 text-center"
               >
-                Back
+                Cancel
               </Link>
             </div>
           </form>
