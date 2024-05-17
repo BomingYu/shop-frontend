@@ -50,7 +50,7 @@ export default function NavBar() {
                   onClick={() => setIsMenuOpen(false)}
                   className="text-center text-lg border-4 dark:border-gray-200 border-black p-1 rounded-full"
                 >
-                  X
+                  Close
                 </button>
               </div>
             ) : null}

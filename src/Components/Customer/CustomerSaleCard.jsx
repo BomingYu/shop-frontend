@@ -1,4 +1,8 @@
+import { useRouter } from "next/navigation";
+
 export default function CustomerSaleCard({id, name, start, end }) {
+  const router = useRouter();
+
   const convertDate = (date) => {
     if (date === "") {
       return "N/A";
@@ -8,6 +12,7 @@ export default function CustomerSaleCard({id, name, start, end }) {
   };
   const handleSaleSelect = () => {
     console.log(id);
+    router.push("/sale/"+id);
   }
   return (
     <button onClick={handleSaleSelect}>

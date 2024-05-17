@@ -36,7 +36,7 @@ export default function AdminProductCard({ id , imagePath, name, description }) 
   }
 
   return (
-    <div className="w-72 h-72 flex items-center justify-center border m-1 rounded-lg">
+    <div className="w-60 h-60 flex items-center justify-center border m-1 rounded-lg">
       <div className="flex flex-col items-center justify-center space-y-2 w-[180px] h-[200px]">
         <div className="image-container">
           <Image
@@ -50,7 +50,7 @@ export default function AdminProductCard({ id , imagePath, name, description }) 
           />
         </div>
         <div className="w-full items-center justify-center">
-          <h2 className="text-lg text-center font-semibold truncate">
+          <h2 className="text-md text-center font-semibold truncate">
             {name}
           </h2>
         </div>
