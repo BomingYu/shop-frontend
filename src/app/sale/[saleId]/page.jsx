@@ -26,10 +26,10 @@ export default function Page({ params }) {
     };
     const getUserCart = async () => {
       const response = await axios.get(
-        "http://localhost:5006/api/cartItem/user/"+userId
+        "http://localhost:5006/api/cartItem/user/" + userId
       );
       const resUserCart = response.data;
-      setUserCart(resUserCart)
+      setUserCart(resUserCart);
     };
     getSaleById();
     getUserCart();
@@ -37,7 +37,7 @@ export default function Page({ params }) {
 
   const testButton = () => {
     console.log(userCart);
-  }
+  };
 
   const checkEndAt = (date) => {
     if (date == "" || date == null) {
