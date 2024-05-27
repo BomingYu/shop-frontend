@@ -3,11 +3,14 @@
 import SaleItemCard from "@/Components/Customer/SaleItemCard";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useUserContext } from "@/Contexts/UserContext";
 
 export default function Page({ params }) {
   const [sale, setSale] = useState({});
   const [saleItems, setSaleItems] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const { user } = useUserContext();
 
   const [userCart, setUserCart] = useState([]);
 
@@ -24,19 +27,11 @@ export default function Page({ params }) {
       setSaleItems(resSaleItems);
       setLoading(false);
     };
-    const getUserCart = async () => {
-      const response = await axios.get(
-        "http://localhost:5006/api/cartItem/user/" + userId
-      );
-      const resUserCart = response.data;
-      setUserCart(resUserCart);
-    };
     getSaleById();
-    getUserCart();
   }, []);
 
   const testButton = () => {
-    console.log(userCart);
+    console.log(saleItems);
   };
 
   const checkEndAt = (date) => {
@@ -73,15 +68,21 @@ export default function Page({ params }) {
               Loading...
             </h1>
           ) : (
-            saleItems.map((item) => (
-              <SaleItemCard
-                name={item.product.name}
-                price={item.price}
-                unit={item.unit}
-                desc={item.description}
-                imagePath={item.product.image}
-              />
-            ))
+            saleItems.map((item) => {
+              const existInCart = user.cartItems.some(ci=>ci.id === item.id);
+              console.log("Result ",existInCart);
+              return (
+                <SaleItemCard
+                  key={item.id}
+                  name={item.product.name}
+                  price={item.price}
+                  unit={item.unit}
+                  desc={item.description}
+                  imagePath={item.product.image}
+                  isInCart={existInCart}
+                />
+              );
+            })
           )}
         </div>
         <button onClick={testButton}>Test</button>

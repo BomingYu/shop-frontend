@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUserContext } from "@/Contexts/UserContext";
 import { useRouter } from "next/navigation";
 import { IoCartOutline } from "react-icons/io5";
@@ -11,6 +11,12 @@ export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, setUser } = useUserContext();
   const router = useRouter();
+  const [isLoggedIn , setIsLoggedIn] = useState(false);
+
+  useEffect(()=>{
+    const objProps = Object.keys(user);
+    setIsLoggedIn(objProps.length !==0);
+  },[user]);
 
   const isLogin = () => {
     const objProps = Object.keys(user);
@@ -63,24 +69,24 @@ export default function NavBar() {
               <li>
                 <Link href="/">Sales</Link>
               </li>
-              {isLogin() && (
+              {isLoggedIn && (
                 <li>
                   <Link href="#">
                     <IoCartOutline size="1.7em" />
                   </Link>
                 </li>
               )}
-              {isLogin() && (
+              {isLoggedIn && (
                 <li>
                   <button onClick={handleLogout}>Logout</button>
                 </li>
               )}
-              {!isLogin() && (
+              {!isLoggedIn && (
                 <li>
                   <Link href="/login">LogIn</Link>
                 </li>
               )}
-              {!isLogin() && (
+              {!isLoggedIn && (
                 <li>
                   <Link href="/signup">SignUp</Link>
                 </li>
