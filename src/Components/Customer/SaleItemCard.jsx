@@ -94,7 +94,7 @@ export default function SaleItemCard({
           </button>
         </>):(<span className="font-semibold dark:text-rose-800 text-rose-600"><Link href="/login" className="underline italic hover:font-medium">Login</Link> For Shopping</span>)}
         
-        <button onClick={()=>{console.log(user)}}>{isInCart}</button>
+        {isInCart ? (<span>true</span>): (<span>false</span>)}
       </div>
     </div>
   );

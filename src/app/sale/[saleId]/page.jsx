@@ -9,12 +9,9 @@ export default function Page({ params }) {
   const [sale, setSale] = useState({});
   const [saleItems, setSaleItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const { user } = useUserContext();
-
-  const [userCart, setUserCart] = useState([]);
-
-  const userId = "2a2df2b0-5fa1-4518-991d-572a8aa58916";
 
   useEffect(() => {
     const getSaleById = async () => {
@@ -30,8 +27,13 @@ export default function Page({ params }) {
     getSaleById();
   }, []);
 
+  useEffect(() => {
+    const objProps = Object.keys(user);
+    setIsLoggedIn(objProps.length !== 0);
+  }, [user]);
+
   const testButton = () => {
-    console.log(saleItems);
+    console.log(user);
   };
 
   const checkEndAt = (date) => {
@@ -69,8 +71,11 @@ export default function Page({ params }) {
             </h1>
           ) : (
             saleItems.map((item) => {
-              const existInCart = user.cartItems.some(ci=>ci.id === item.id);
-              console.log("Result ",existInCart);
+              const existInCart =
+                isLoggedIn && Array.isArray(user.cartItems)
+                  ? user.cartItems.some((ci) => ci.salesItemId === item.id)
+                  : false;
+              console.log("Result ", item.id ,existInCart);
               return (
                 <SaleItemCard
                   key={item.id}
