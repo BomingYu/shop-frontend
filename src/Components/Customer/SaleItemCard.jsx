@@ -19,6 +19,7 @@ export default function SaleItemCard({
   const [quant, setQuant] = useState(quantity);
   const { user } = useUserContext();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [valueChanged , setValueChanged] = useState(false);
 
   useEffect(() => {
     const objProps = Object.keys(user);
@@ -37,12 +38,14 @@ export default function SaleItemCard({
   const handleMinus = () => {
     if (quant > 0) {
       setQuant(quant - 1);
+      setValueChanged(true);
     }
   };
 
   const handlePlus = () => {
     if (quant < 999) {
       setQuant(quant + 1);
+      setValueChanged(true);
     }
   };
   return (
@@ -51,7 +54,6 @@ export default function SaleItemCard({
         <div className="image-container">
           <Image
             src={imgError ? "/icons/NotFound.jpg" : imagePath}
-            //src="https://sqlboldstorage.blob.core.windows.net/shopcontianer/psc (71).jpeg"
             alt={name}
             width={90}
             height={90}
@@ -93,8 +95,12 @@ export default function SaleItemCard({
             </div>
             {isInCart ? (
               <div className="flex space-x-6 mt-1">
-                <button className="bg-gray-700 p-1 rounded-full text-gray-200">Update</button>
-                <button className="bg-red-700 p-1 rounded-full text-white">Delete</button>
+                <button className={`p-1 rounded-full text-gray-200 ${!valueChanged ? `line-through bg-gray-600` : `bg-gray-700`}`} disabled={valueChanged}>
+                  Update
+                </button>
+                <button className="bg-red-700 p-1 rounded-full text-white">
+                  Delete
+                </button>
               </div>
             ) : (
               <button className="font-semibold p-1 rounded-full bg-amber-400 dark:bg-amber-700 dark:text-gray-200 hover:bg-orange-400 dark:hover:bg-orange-800 active:bg-yellow-400 dark:active:bg-yellow-500 dark:active:text-black">
