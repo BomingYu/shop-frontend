@@ -8,32 +8,45 @@ import { useUserContext } from "@/Contexts/UserContext";
 export default function Page({ params }) {
   const [sale, setSale] = useState({});
   const [saleItems, setSaleItems] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const { user } = useUserContext();
 
   useEffect(() => {
-    const getSaleById = async () => {
-      const response = await axios.get(
+    const objProps = Object.keys(user);
+    setIsLoggedIn(objProps.length !== 0);
+  }, [user]);
+
+  useEffect(() => {
+    const getCartByUser = async () => {
+      const responseCart = await axios.get(
+        "http://localhost:5006/api/cartItem/user/" + user.id
+      );
+      console.log("true");
+      const resCartItems = responseCart.data;
+      setCartItems(resCartItems);
+    };
+    getCartByUser();
+  }, []);
+
+  useEffect(() => {
+    const getSaleAndCart = async () => {
+      const responseSale = await axios.get(
         "http://localhost:5006/api/sales/" + params.saleId
       );
-      const resSale = response.data;
+      const resSale = responseSale.data;
       const resSaleItems = resSale.salesItems;
       setSale(resSale);
       setSaleItems(resSaleItems);
       setLoading(false);
     };
-    getSaleById();
+    getSaleAndCart();
   }, []);
 
-  useEffect(() => {
-    const objProps = Object.keys(user);
-    setIsLoggedIn(objProps.length !== 0);
-  }, [user]);
-
   const testButton = () => {
-    console.log(user);
+    console.log(cartItems);
   };
 
   const checkEndAt = (date) => {
@@ -43,6 +56,9 @@ export default function Page({ params }) {
       return true;
     }
   };
+
+  const checkQuantity = () => {};
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-lightRGBA dark:bg-darkRGBA">
       <div className="flex flex-col items-center font-bodyFont space-y-3">
@@ -71,16 +87,24 @@ export default function Page({ params }) {
             </h1>
           ) : (
             saleItems.map((item) => {
-              const existInCart =
-                isLoggedIn && Array.isArray(user.cartItems)
-                  ? user.cartItems.some((ci) => ci.salesItemId === item.id)
-                  : false;
-              console.log("Result ", item.id ,existInCart);
+              const existInCart = cartItems.some(
+                (ci) => ci.salesItemId === item.id
+              );
+
+              console.log("Result ", item.id, existInCart);
+
+              const cartItem = cartItems.find((ci) => ci.salesItemId === item.id);
+
+              const cartQuant = cartItem ? cartItem.quantity : 0;
+
+              console.log(cartQuant);
+
               return (
                 <SaleItemCard
                   key={item.id}
                   name={item.product.name}
                   price={item.price}
+                  quantity={cartQuant}
                   unit={item.unit}
                   desc={item.description}
                   imagePath={item.product.image}
