@@ -5,8 +5,12 @@ import { useEffect, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { useUserContext } from "@/Contexts/UserContext";
 import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function SaleItemCard({
+  id,
+  cartId,
   name,
   price,
   unit,
@@ -14,22 +18,18 @@ export default function SaleItemCard({
   desc,
   imagePath,
   isInCart,
+  stateChanging,
 }) {
   const [imgError, setImageError] = useState(false);
   const [quant, setQuant] = useState(quantity);
   const { user } = useUserContext();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [valueChanged , setValueChanged] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const objProps = Object.keys(user);
     setIsLoggedIn(objProps.length !== 0);
   }, [user]);
-
-  const isLogin = () => {
-    const objProps = Object.keys(user);
-    return objProps.length != 0;
-  };
 
   const handleImageError = () => {
     setImageError(true);
@@ -48,6 +48,36 @@ export default function SaleItemCard({
       setValueChanged(true);
     }
   };
+
+  const handleAddNewToCart = async () => {
+    const formData = {
+      price: price,
+      quantity: quant,
+      total: quant * price,
+      appUserId: user.id,
+      salesItemId: id,
+    };
+    const response = await axios.post(
+      "http://localhost:5006/api/cartItem",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
+    console.log(response.data);
+    stateChanging();
+  };
+
+  const handleDelete = async() => {
+    const response  = await axios.delete("http://localhost:5006/api/cartItem/"+cartId);
+    console.log(response.data);
+    setQuant(0);
+    stateChanging();
+  }
+
   return (
     <div className="w-64 h-72 flex flex-col items-center justify-center border m-1 rounded-lg">
       <div className="flex flex-col items-center justify-center space-y-1 w-[180px] h-[200px]">
@@ -95,15 +125,20 @@ export default function SaleItemCard({
             </div>
             {isInCart ? (
               <div className="flex space-x-6 mt-1">
-                <button className={`p-1 rounded-full text-gray-200 ${!valueChanged ? `line-through bg-gray-600` : `bg-gray-700`}`} disabled={valueChanged}>
+                <button
+                  className={`p-1 rounded-full text-gray-200 bg-gray-700`}
+                >
                   Update
                 </button>
-                <button className="bg-red-700 p-1 rounded-full text-white">
+                <button className="bg-red-700 p-1 rounded-full text-white" onClick={handleDelete}>
                   Delete
                 </button>
               </div>
             ) : (
-              <button className="font-semibold p-1 rounded-full bg-amber-400 dark:bg-amber-700 dark:text-gray-200 hover:bg-orange-400 dark:hover:bg-orange-800 active:bg-yellow-400 dark:active:bg-yellow-500 dark:active:text-black">
+              <button
+                onClick={handleAddNewToCart}
+                className="font-semibold p-1 rounded-full bg-amber-400 dark:bg-amber-700 dark:text-gray-200 hover:bg-orange-400 dark:hover:bg-orange-800 active:bg-yellow-400 dark:active:bg-yellow-500 dark:active:text-black"
+              >
                 Add To Cart
               </button>
             )}

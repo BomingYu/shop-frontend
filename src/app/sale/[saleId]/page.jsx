@@ -11,6 +11,7 @@ export default function Page({ params }) {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [reloading , setReloading] = useState(true);
 
   const { user } = useUserContext();
 
@@ -29,7 +30,7 @@ export default function Page({ params }) {
       setCartItems(resCartItems);
     };
     getCartByUser();
-  }, []);
+  }, [reloading]);
 
   useEffect(() => {
     const getSaleAndCart = async () => {
@@ -43,7 +44,7 @@ export default function Page({ params }) {
       setLoading(false);
     };
     getSaleAndCart();
-  }, []);
+  }, [reloading]);
 
   const testButton = () => {
     console.log(cartItems);
@@ -56,8 +57,6 @@ export default function Page({ params }) {
       return true;
     }
   };
-
-  const checkQuantity = () => {};
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-lightRGBA dark:bg-darkRGBA">
@@ -91,17 +90,17 @@ export default function Page({ params }) {
                 (ci) => ci.salesItemId === item.id
               );
 
-              console.log("Result ", item.id, existInCart);
-
               const cartItem = cartItems.find((ci) => ci.salesItemId === item.id);
 
               const cartQuant = cartItem ? cartItem.quantity : 0;
 
-              console.log(cartQuant);
+              const cartId = cartItem ? cartItem.id : 0;
 
               return (
                 <SaleItemCard
                   key={item.id}
+                  id={item.id}
+                  cartId={cartId}
                   name={item.product.name}
                   price={item.price}
                   quantity={cartQuant}
@@ -109,6 +108,7 @@ export default function Page({ params }) {
                   desc={item.description}
                   imagePath={item.product.image}
                   isInCart={existInCart}
+                  stateChanging={()=>{setReloading(!reloading)}}
                 />
               );
             })
