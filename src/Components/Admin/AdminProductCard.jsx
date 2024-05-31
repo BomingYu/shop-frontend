@@ -40,7 +40,8 @@ export default function AdminProductCard({ id , imagePath, name, description }) 
       <div className="flex flex-col items-center justify-center space-y-2 w-[180px] h-[200px]">
         <div className="image-container">
           <Image
-            src={imgError ? "/icons/NotFound.jpg" : imagePath}
+            //src={imgError ? "/icons/NotFound.jpg" : imagePath}
+            src={imgError ? "/icons/NotFound.jpg" : imagePath || "/icons/NotFound.jpg"}
             alt={name}
             width={100}
             height={100}

@@ -38,14 +38,12 @@ export default function SaleItemCard({
   const handleMinus = () => {
     if (quant > 0) {
       setQuant(quant - 1);
-      setValueChanged(true);
     }
   };
 
   const handlePlus = () => {
     if (quant < 999) {
       setQuant(quant + 1);
-      setValueChanged(true);
     }
   };
 
@@ -78,12 +76,20 @@ export default function SaleItemCard({
     stateChanging();
   }
 
+  const handleUpdate = () => {
+    console.log(cartId);
+    console.log(quant);
+    console.log(price);
+    console.log(price * quant);
+  }
+
   return (
     <div className="w-64 h-72 flex flex-col items-center justify-center border m-1 rounded-lg">
       <div className="flex flex-col items-center justify-center space-y-1 w-[180px] h-[200px]">
         <div className="image-container">
           <Image
-            src={imgError ? "/icons/NotFound.jpg" : imagePath}
+            //src={imgError ? "/icons/NotFound.jpg" : imagePath}
+            src={imgError ? "/icons/NotFound.jpg" : imagePath || "/icons/NotFound.jpg"}
             alt={name}
             width={90}
             height={90}
@@ -127,6 +133,7 @@ export default function SaleItemCard({
               <div className="flex space-x-6 mt-1">
                 <button
                   className={`p-1 rounded-full text-gray-200 bg-gray-700`}
+                  onClick={handleUpdate}
                 >
                   Update
                 </button>

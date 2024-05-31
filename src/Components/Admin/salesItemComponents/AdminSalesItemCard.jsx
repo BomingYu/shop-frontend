@@ -30,7 +30,8 @@ export default function AdminSalesItemCard({
       <div className="flex flex-col items-center justify-center space-y-1 w-[180px] h-[200px]">
         <div className="image-container">
           <Image
-            src={imgError ? "/icons/NotFound.jpg" : imgPath}
+            //src={imgError ? "/icons/NotFound.jpg" : imgPath}
+            src={imgError ? "/icons/NotFound.jpg" : imgPath || "/icons/NotFound.jpg"}
             alt={name}
             width={100}
             height={100}

@@ -13,7 +13,8 @@ export default function SingleProductCard({name , imgPath}) {
       <div className="flex flex-col items-center justify-center space-y-1 w-20 h-20">
         <div className="image-container">
         <Image
-            src={imgError ? "/icons/NotFound.jpg" : imgPath}
+            //src={imgError ? "/icons/NotFound.jpg" : imgPath}
+            src={imgError ? "/icons/NotFound.jpg" : imgPath || "/icons/NotFound.jpg"}
             alt={name}
             width={60}
             height={60}

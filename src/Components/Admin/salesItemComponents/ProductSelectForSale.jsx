@@ -18,7 +18,8 @@ export default function ProductSelectForSale({name , desc , imgPath , onHandleSe
       <div className="flex flex-col items-center justify-center space-y-2 w-[100px] h-[150px]">
       <div className="image-container">
         <Image
-            src={imgError ? "/icons/NotFound.jpg" : imgPath}
+            //src={imgError ? "/icons/NotFound.jpg" : imgPath}
+            src={imgError ? "/icons/NotFound.jpg" : imgPath || "/icons/NotFound.jpg"}
             alt={name}
             width={70}
             height={70}
