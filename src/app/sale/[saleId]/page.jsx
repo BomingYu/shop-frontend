@@ -105,7 +105,6 @@ export default function Page({ params }) {
                   price={item.price}
                   quantity={cartQuant}
                   unit={item.unit}
-                  desc={item.description}
                   imagePath={item.product.image}
                   isInCart={existInCart}
                   stateChanging={()=>{setReloading(!reloading)}}

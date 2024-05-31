@@ -7,6 +7,7 @@ import { useUserContext } from "@/Contexts/UserContext";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import WarningComponent from "../Sundries/WarningComponent";
 
 export default function SaleItemCard({
   id,
@@ -15,7 +16,6 @@ export default function SaleItemCard({
   price,
   unit,
   quantity,
-  desc,
   imagePath,
   isInCart,
   stateChanging,
@@ -69,27 +69,54 @@ export default function SaleItemCard({
     stateChanging();
   };
 
-  const handleDelete = async() => {
-    const response  = await axios.delete("http://localhost:5006/api/cartItem/"+cartId);
+  const handleDelete = async () => {
+    const response = await axios.delete(
+      "http://localhost:5006/api/cartItem/" + cartId
+    );
     console.log(response.data);
     setQuant(0);
     stateChanging();
-  }
+  };
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     console.log(cartId);
     console.log(quant);
     console.log(price);
     console.log(price * quant);
-  }
+    if(quant > 0){
+      const formData = {
+        quantity: quant,
+        total: price * quant,
+      };
+      const response = await axios.put(
+        "http://localhost:5006/api/cartItem/" + cartId,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      console.log(response.data);
+      stateChanging();
+    }
+    if(quant === 0){
+      handleDelete();
+    }
+  };
 
   return (
     <div className="w-64 h-72 flex flex-col items-center justify-center border m-1 rounded-lg">
       <div className="flex flex-col items-center justify-center space-y-1 w-[180px] h-[200px]">
-        <div className="image-container">
+        <div className="image-container h-[91px]">
           <Image
             //src={imgError ? "/icons/NotFound.jpg" : imagePath}
-            src={imgError ? "/icons/NotFound.jpg" : imagePath || "/icons/NotFound.jpg"}
+            src={
+              imgError
+                ? "/icons/NotFound.jpg"
+                : imagePath || "/icons/NotFound.jpg"
+            }
             alt={name}
             width={90}
             height={90}
@@ -101,9 +128,6 @@ export default function SaleItemCard({
         <h1 className="font-semibold">{name}</h1>
         <div>
           <span>{price}</span> <span>/</span> <span>{unit}</span>
-        </div>
-        <div className="flex w-full">
-          <p className="w-full truncate text-center">{desc}</p>
         </div>
         {isLoggedIn ? (
           <>
@@ -129,26 +153,33 @@ export default function SaleItemCard({
                 <FaPlus />
               </button>
             </div>
-            {isInCart ? (
-              <div className="flex space-x-6 mt-1">
-                <button
-                  className={`p-1 rounded-full text-gray-200 bg-gray-700`}
-                  onClick={handleUpdate}
-                >
-                  Update
-                </button>
-                <button className="bg-red-700 p-1 rounded-full text-white" onClick={handleDelete}>
-                  Delete
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={handleAddNewToCart}
-                className="font-semibold p-1 rounded-full bg-amber-400 dark:bg-amber-700 dark:text-gray-200 hover:bg-orange-400 dark:hover:bg-orange-800 active:bg-yellow-400 dark:active:bg-yellow-500 dark:active:text-black"
-              >
-                Add To Cart
-              </button>
-            )}
+            <div className="h-[36px]">
+              {isInCart ? (
+                <div className="flex space-x-6 mt-1">
+                  <button
+                    className={`p-1 rounded-full text-gray-200 bg-gray-700`}
+                    onClick={handleUpdate}
+                  >
+                    Update
+                  </button>
+                  <button
+                    className="bg-red-700 p-1 rounded-full text-white"
+                    onClick={handleDelete}
+                  >
+                    Delete
+                  </button>
+                </div>
+              ) : (
+                quant > 0 && (
+                  <button
+                    onClick={handleAddNewToCart}
+                    className="font-semibold p-1 rounded-full bg-amber-400 dark:bg-amber-700 dark:text-gray-200 hover:bg-orange-400 dark:hover:bg-orange-800 active:bg-yellow-400 dark:active:bg-yellow-500 dark:active:text-black"
+                  >
+                    Add To Cart
+                  </button>
+                )
+              )}
+            </div>
           </>
         ) : (
           <span className="font-semibold dark:text-rose-800 text-rose-600">
