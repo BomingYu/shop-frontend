@@ -71,7 +71,7 @@ export default function NavBar() {
               </li>
               {isLoggedIn && (
                 <li>
-                  <Link href="#">
+                  <Link href="/cart">
                     <IoCartOutline size="1.7em" />
                   </Link>
                 </li>
