@@ -1,59 +1,66 @@
-"use client"
+"use client";
 
-import CartSaleCard from "@/Components/Customer/CartSaleCard";
+import Link from "next/link";
 import { useUserContext } from "@/Contexts/UserContext";
 import axios from "axios";
-import { useEffect , useState} from "react";
+import { useEffect, useState } from "react";
+import CartSaleCard from "@/Components/Customer/CartSaleCard";
 
 export default function Page() {
-    const {user} = useUserContext();
-    const [isLoggedIn , setIsLoggedIn] = useState(false);
-    const [userCart , setUserCart] = useState([]);
-    const [cartSale, setCartSale] = useState([]);
-    const [loadingCart , setLoadingCart] = useState(true);
+  const { user } = useUserContext();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [cartSale, setCartSale] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(()=>{
-        const objProps = Object.keys(user);
-        setIsLoggedIn(objProps.length !==0);
-      },[user]);
+  useEffect(() => {
+    const objProps = Object.keys(user);
+    setIsLoggedIn(objProps.length !== 0);
+  }, [user]);
 
-    useEffect(()=>{
-        const getUserCart = async() => {
-            const responseFirstStep = await axios.get("http://localhost:5006/api/cartItem/user/"+user.id);
-            const userCartRes = responseFirstStep.data;
-            const cartArray = Array.from(new Set(userCartRes.map(item => item.salesItem.saleId)));
-            setUserCart(cartArray);
+  useEffect(() => {
+    const getUserCartSale = async () => {
+      const response = await axios.get(
+        `http://localhost:5006/api/cartItem/user/${user.id}/sales`
+      );
+      const cartSaleRes = response.data;
+      setCartSale(cartSaleRes);
+      setLoading(false);
+    };
+    getUserCartSale();
+  }, [cartSale]);
 
-            const responseSecondStep = await axios.post("http://localhost:5006/api/sales/salesByUserCart" , userCart);
-            const userCartSaleRes = responseSecondStep.data;
-            setCartSale(userCartSaleRes);
+  const testButton = async () => {
+    console.log(cartSale);
+  };
 
-            setLoadingCart(false);
-            console.log(userCartSaleRes);
-        }
-        getUserCart();
-    },[]);
-
-    const testButton = async() => {
-        //console.log(user.cartItems);
-        //setUserCartItems(Array.from(new Set(user.cartItems.map(item => item.salesItem.saleId))));
-        //setLoadingCart(false);
-        //console.log(userCart);
-        const response = await axios.post("http://localhost:5006/api/sales/salesByUserCart" , userCart);
-        const cartRes = response.data;
-        console.log(cartRes);
-    }
-
-    return (
-      <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-lightRGBA dark:bg-darkRGBA">
-        <div className="flex flex-col space-y-10 items-center ">
-          <h1 className="font-tagFont text-5xl font-bold">My Carts</h1>
-          {!loadingCart && (userCart.length == 0 ? (<span>Here is nothing in your cart.</span>):(<span>You selected the items in the following sales.</span>))}
-          {!loadingCart && (cartSale.map((item , index) => (
-            <CartSaleCard key={index} name={item.name} endAt={item.endAt}/>
-          )))}
-          {isLoggedIn && (<button onClick={testButton}>test</button>)}
-        </div>
-      </main>
-    );
-  }
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-lightRGBA dark:bg-darkRGBA">
+      <div className="flex flex-col space-y-10 items-center font-tagFont">
+        <h1 className=" text-5xl font-bold">My Carts</h1>
+        {!loading &&
+          (cartSale.length == 0 ? (
+            <div>
+              <span>No item in your cart. </span>
+              <Link
+                className="dark:text-rose-800 text-rose-600 font-semibold underline"
+                href="/"
+              >
+                START SHOPPING
+              </Link>
+            </div>
+          ) : (
+            <span className="font-semibold">You have items in the following sales</span>
+          ))}
+        {!loading ? (
+          isLoggedIn && <div className="flex flex-col space-y-1">
+            {cartSale.map(item => (
+              <CartSaleCard key={item.id} id={item.id} name={item.name} endAt={item.endAt}/>
+            ))}
+          </div>
+        ) : (
+          <h1 className="font-tagFont text-2xl font-bold">Loading...</h1>
+        )}
+      </div>
+    </main>
+  );
+}

@@ -1,9 +1,13 @@
-export default function CartSaleCard({name , endAt}){
+export default function CartSaleCard({id, name , endAt}){
+    const handleButtonClick = () => {
+        console.log(id);
+    }
+    
     return(
-    <button>
+    <button className="border dark:border-gray-100 border-gray-500 p-1 rounded-md hover:border-yellow-500" onClick={handleButtonClick}>
         <ul>
-            <li>{name}</li>
-            <li>End At {endAt}</li>
+            <li className="font-semibold">{name}</li>
+            <li>End At: <span className="font-semibold">{endAt}</span></li>
         </ul>
     </button>
     );
