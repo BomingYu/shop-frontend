@@ -1,6 +1,11 @@
+import { useRouter } from "next/navigation";
+
 export default function CartSaleCard({id, name , endAt}){
+    const router = useRouter();
+
     const handleButtonClick = () => {
         console.log(id);
+        router.push("/cart/"+id);
     }
     
     return(
