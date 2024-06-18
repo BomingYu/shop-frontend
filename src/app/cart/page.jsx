@@ -27,7 +27,7 @@ export default function Page() {
       setLoading(false);
     };
     getUserCartSale();
-  }, [cartSale]);
+  }, []);
 
   const testButton = async () => {
     console.log(cartSale);

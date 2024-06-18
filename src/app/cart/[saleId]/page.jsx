@@ -1,5 +1,6 @@
 "use client"
 
+import CartItemCard from "@/Components/Customer/CartItemCard";
 import { useUserContext } from "@/Contexts/UserContext";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -26,7 +27,8 @@ export default function Page({params}){
     return(
         <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-lightRGBA dark:bg-darkRGBA font-bodyFont">
             {loading ? (<h1 className="text-5xl font-bold">Loading...</h1>) : (
-                <div>
+                <div className="flex flex-col items-center justify-center">
+                    <CartItemCard />
                     <button onClick={testButton}>Test</button>
                 </div>
             )}
