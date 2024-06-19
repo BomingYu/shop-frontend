@@ -2,13 +2,14 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
-export default function CartItemCard() {
-  const [quantity, setQuantity] = useState(0);
-  const [total, setTotal] = useState();
+export default function CartItemCard({name , price , unit , quant , subTotal , imagePath}) {
+  const [quantity, setQuantity] = useState(quant);
+  const [total, setTotal] = useState(subTotal);
   const [changed, setChanged] = useState(false);
+  const [imgError, setImageError] = useState(false);
 
   useEffect(() => {
-    setTotal(quantity * 10);
+    setTotal(quantity * price);
   }, [quantity]);
 
   const handleMinus = () => {
@@ -24,23 +25,35 @@ export default function CartItemCard() {
       setChanged(true);
     }
   };
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
   return (
-    <div className="flex flex-col space-y-1 items-center justify-center border p-1 rounded-lg">
+    <div className="flex flex-col space-y-1 items-center justify-center border p-1 rounded-lg w-[345px] h-[75px]">
       <div className="flex flex-row items-center justify-center space-x-3">
         <div>
           <Image
+            src={
+              imgError
+                ? "/icons/NotFound.jpg"
+                : imagePath || "/icons/NotFound.jpg"
+            }
+            alt={name}
             width={30}
             height={30}
-            src="https://sqlboldstorage.blob.core.windows.net/shopcontianer/psc %28100%29.jpeg"
+            onError={handleImageError}
+            objectFit="cover"
+            objectPosition="center"
           />
         </div>
         <div>
-          <span>Name</span>
+          <span>{name}</span>
         </div>
         <div>
-          <span className="font-semibold">price</span>
+          <span className="font-semibold">${price}</span>
           <span>/</span>
-          <span>Unit</span>
+          <span>{unit}</span>
         </div>
         <div className="flex flex-row space-x-1">
           <button
