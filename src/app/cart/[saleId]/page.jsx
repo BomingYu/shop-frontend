@@ -25,7 +25,7 @@ export default function Page({ params }) {
   }, []);
 
   const testButton = () => {
-    console.log(cartItems);
+    console.log(sale);
   };
 
   return (
@@ -37,6 +37,7 @@ export default function Page({ params }) {
           {cartItems.map((item) => (
             <CartItemCard
               key={item.cartItems[0].id}
+              id={item.cartItems[0].id}
               name={item.product.name}
               price={item.price}
               unit={item.unit}

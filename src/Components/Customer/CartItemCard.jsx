@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
-export default function CartItemCard({name , price , unit , quant , subTotal , imagePath}) {
+export default function CartItemCard({id , name , price , unit , quant , subTotal , imagePath}) {
   const [quantity, setQuantity] = useState(quant);
   const [total, setTotal] = useState(subTotal);
   const [changed, setChanged] = useState(false);
@@ -24,6 +24,14 @@ export default function CartItemCard({name , price , unit , quant , subTotal , i
       setQuantity(quantity + 1);
       setChanged(true);
     }
+  };
+
+  const handleUpdate = () => {
+    console.log(id);
+  };
+
+  const handleDelete = () => {
+    console.log(id);
   };
 
   const handleImageError = () => {
@@ -84,11 +92,11 @@ export default function CartItemCard({name , price , unit , quant , subTotal , i
 
       <div className="flex space-x-1">
         {changed && (
-          <button className="p-1 font-semibold rounded-full text-gray-700 bg-amber-500">
+          <button className="p-1 font-semibold rounded-full text-gray-700 bg-amber-500" onClick={handleUpdate}>
             Update
           </button>
         )}
-        <button className="p-1 font-semibold rounded-full text-gray-200 bg-red-700">
+        <button className="p-1 font-semibold rounded-full text-gray-200 bg-red-700" onClick={handleDelete}>
           Delete
         </button>
       </div>
