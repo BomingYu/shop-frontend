@@ -1,12 +1,30 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
+import axios from "axios";
+import { useUserContext } from "@/Contexts/UserContext";
 
-export default function CartItemCard({id , name , price , unit , quant , subTotal , imagePath}) {
+export default function CartItemCard({
+  id,
+  name,
+  price,
+  unit,
+  quant,
+  subTotal,
+  imagePath,
+  handleRefresh,
+}) {
   const [quantity, setQuantity] = useState(quant);
   const [total, setTotal] = useState(subTotal);
   const [changed, setChanged] = useState(false);
   const [imgError, setImageError] = useState(false);
+  const {user} = useUserContext();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const objProps = Object.keys(user);
+    setIsLoggedIn(objProps.length !== 0);
+  }, [user]);
 
   useEffect(() => {
     setTotal(quantity * price);
@@ -26,12 +44,44 @@ export default function CartItemCard({id , name , price , unit , quant , subTota
     }
   };
 
-  const handleUpdate = () => {
-    console.log(id);
+  const handleUpdate = async () => {
+    if (quantity === 0) {
+      const confirm = window.confirm("Set quantity to 0. Remove item from cart?"); 
+      if(confirm){
+        await handleDelete();
+      }
+    }
+    else if (quantity > 0) {
+      const formData = {
+        quantity: quantity,
+        total: price * quantity,
+      };
+      console.log(formData);
+      const response = await axios.put(
+        "http://localhost:5006/api/cartItem/" + id,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      setChanged(false);
+    }
+    else{
+      alert("Quantity cannot be less than 0!");
+      setQuantity(1);
+    }
+    handleRefresh();
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
+    const response = await axios.delete(
+      "http://localhost:5006/api/cartItem/" + id
+    );
     console.log(id);
+    handleRefresh();
   };
 
   const handleImageError = () => {
@@ -92,11 +142,17 @@ export default function CartItemCard({id , name , price , unit , quant , subTota
 
       <div className="flex space-x-1">
         {changed && (
-          <button className="p-1 font-semibold rounded-full text-gray-700 bg-amber-500" onClick={handleUpdate}>
+          <button
+            className="p-1 font-semibold rounded-full text-gray-700 bg-amber-500"
+            onClick={handleUpdate}
+          >
             Update
           </button>
         )}
-        <button className="p-1 font-semibold rounded-full text-gray-200 bg-red-700" onClick={handleDelete}>
+        <button
+          className="p-1 font-semibold rounded-full text-gray-200 bg-red-700"
+          onClick={handleDelete}
+        >
           Delete
         </button>
       </div>

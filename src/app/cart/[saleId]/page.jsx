@@ -10,6 +10,7 @@ export default function Page({ params }) {
   const [sale, setSale] = useState();
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [status , setStatus] = useState(false);
 
   useEffect(() => {
     const getUserCartInThisCart = async () => {
@@ -22,7 +23,7 @@ export default function Page({ params }) {
       setLoading(false);
     };
     getUserCartInThisCart();
-  }, []);
+  }, [status]);
 
   const testButton = () => {
     console.log(sale);
@@ -44,6 +45,7 @@ export default function Page({ params }) {
               quant={item.cartItems[0].quantity}
               subTotal={item.cartItems[0].total}
               imagePath={item.product.image}
+              handleRefresh={()=>setStatus(!status)}
             />
           ))}
           <button onClick={testButton}>Test</button>
