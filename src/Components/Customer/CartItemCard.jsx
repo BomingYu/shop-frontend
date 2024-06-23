@@ -88,7 +88,7 @@ export default function CartItemCard({
     setImageError(true);
   };
   return (
-    <div className="flex flex-col space-y-1 items-center justify-center border p-1 rounded-lg w-[345px] h-[75px]">
+    <div className="flex flex-col space-y-1 items-center justify-center border dark:border-gray-100 border-gray-500 p-1 rounded-lg w-[345px] h-[75px]">
       <div className="flex flex-row items-center justify-center space-x-3">
         <div>
           <Image

@@ -29,7 +29,7 @@ export default function NavBar() {
   };
 
   return (
-    <nav className="sticky top-0 p-2 text-lg font-bold font-navBarFont drop-shadow-2xl dark:bg-cyan-800 dark:text-gray-200 bg-gray-100">
+    <nav className="sticky top-0 p-2 text-lg font-bold font-navBarFont drop-shadow-2xl dark:bg-zinc-800 dark:text-gray-200 bg-gray-300">
       <div className="flex item-start justify-between px-2">
         <div className="text-2xl">
           <Link href="/">LogoImage</Link>

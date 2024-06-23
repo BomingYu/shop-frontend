@@ -24,8 +24,8 @@ module.exports = {
         bodyFont: ["Lato"],
       },
       colors: {
-        darkRGBA: "rgba(26, 144, 102, 0.8)",
-        lightRGBA: "rgba(176, 209, 178, 0.68)",
+        darkRGBA: "rgba(6, 9, 5, 0.55)",
+        lightRGBA: "rgba(100, 200, 100, 0.5)",
       },
     },
   },

@@ -3,6 +3,7 @@
 import CartItemCard from "@/Components/Customer/CartItemCard";
 import { useUserContext } from "@/Contexts/UserContext";
 import axios from "axios";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Page({ params }) {
@@ -10,7 +11,7 @@ export default function Page({ params }) {
   const [sale, setSale] = useState();
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [status , setStatus] = useState(false);
+  const [status, setStatus] = useState(false);
 
   useEffect(() => {
     const getUserCartInThisCart = async () => {
@@ -25,8 +26,17 @@ export default function Page({ params }) {
     getUserCartInThisCart();
   }, [status]);
 
-  const testButton = () => {
+  const handleOrderButton = () => {
     console.log(sale);
+    console.log(cartItems);
+  };
+
+  const calculateTotal = () => {
+    let sum = 0;
+    for (let i = 0; i < cartItems.length; i++) {
+      sum += cartItems[i].cartItems[0].total;
+    }
+    return sum;
   };
 
   return (
@@ -34,7 +44,44 @@ export default function Page({ params }) {
       {loading ? (
         <h1 className="text-5xl font-bold">Loading...</h1>
       ) : (
-        <div className="flex flex-col items-center justify-center space-y-1">
+        <div className="flex flex-col items-center justify-center space-y-3">
+          <h1 className="text-4xl font-bold">{sale.name}</h1>
+          {cartItems.length !== 0 ? (
+            <span className="">
+              You have{" "}
+              <span className="font-bold text-xl">
+                {cartItems.length}
+              </span>{" "}
+              item in this sale.
+            </span>
+          ) : (
+            <span>
+              You have no item in this sale,{" "}
+              <Link
+                className="dark:text-rose-800 text-rose-600 font-semibold underline"
+                href="/"
+              >
+                START SHOPPING
+              </Link>
+              .
+            </span>
+          )}
+          {cartItems.length !== 0 && (
+            <div className="w-full flex items-center justify-between">
+              <button
+                onClick={handleOrderButton}
+                className="p-2 text-lg font-semibold rounded-full text-gray-100 bg-lime-950"
+              >
+                Proceed to Checkout
+              </button>
+              <span className="text-right px-3 font-semibold text-lg">
+                Total :{" "}
+                <span className="text-xl font-bold underline decoration-double underline-offset-4">
+                  ${calculateTotal()}
+                </span>
+              </span>
+            </div>
+          )}
           {cartItems.map((item) => (
             <CartItemCard
               key={item.cartItems[0].id}
@@ -45,10 +92,9 @@ export default function Page({ params }) {
               quant={item.cartItems[0].quantity}
               subTotal={item.cartItems[0].total}
               imagePath={item.product.image}
-              handleRefresh={()=>setStatus(!status)}
+              handleRefresh={() => setStatus(!status)}
             />
           ))}
-          <button onClick={testButton}>Test</button>
         </div>
       )}
     </main>

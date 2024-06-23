@@ -107,7 +107,7 @@ export default function SaleItemCard({
   };
 
   return (
-    <div className="w-64 h-72 flex flex-col items-center justify-center border m-1 rounded-lg">
+    <div className="w-64 h-72 flex flex-col items-center justify-center m-1 rounded-lg border dark:border-gray-100 border-gray-500">
       <div className="flex flex-col items-center justify-center space-y-1 w-[180px] h-[200px]">
         <div className="image-container h-[91px]">
           <Image
@@ -157,7 +157,7 @@ export default function SaleItemCard({
               {isInCart ? (
                 <div className="flex space-x-6 mt-1">
                   <button
-                    className={`p-1 rounded-full text-gray-200 bg-gray-700`}
+                    className={`p-1 rounded-full text-white bg-gray-800`}
                     onClick={handleUpdate}
                   >
                     Update
