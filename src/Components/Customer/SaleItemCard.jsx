@@ -25,6 +25,7 @@ export default function SaleItemCard({
   const { user } = useUserContext();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
+  const [quantChanged, setQuantChanged] = useState(false);
 
   useEffect(() => {
     const objProps = Object.keys(user);
@@ -38,12 +39,14 @@ export default function SaleItemCard({
   const handleMinus = () => {
     if (quant > 0) {
       setQuant(quant - 1);
+      setQuantChanged(true);
     }
   };
 
   const handlePlus = () => {
     if (quant < 999) {
       setQuant(quant + 1);
+      setQuantChanged(true);
     }
   };
 
@@ -83,7 +86,7 @@ export default function SaleItemCard({
     console.log(quant);
     console.log(price);
     console.log(price * quant);
-    if(quant > 0){
+    if (quant > 0) {
       const formData = {
         quantity: quant,
         total: price * quant,
@@ -100,8 +103,9 @@ export default function SaleItemCard({
       );
       console.log(response.data);
       stateChanging();
+      setQuantChanged(false);
     }
-    if(quant === 0){
+    if (quant === 0) {
       handleDelete();
     }
   };
@@ -156,14 +160,18 @@ export default function SaleItemCard({
             <div className="h-[36px]">
               {isInCart ? (
                 <div className="flex space-x-6 mt-1">
+                  {quantChanged && (
+                    <button
+                      className={`p-1 rounded-full text-gray-700 bg-amber-500 font-semibold`}
+                      //className="p-1 font-semibold rounded-full text-gray-700 bg-amber-500"
+                      onClick={handleUpdate}
+                    >
+                      Update
+                    </button>
+                  )}
+
                   <button
-                    className={`p-1 rounded-full text-white bg-gray-800`}
-                    onClick={handleUpdate}
-                  >
-                    Update
-                  </button>
-                  <button
-                    className="bg-red-700 p-1 rounded-full text-white"
+                    className="bg-red-700 p-1 rounded-full text-white font-semibold"
                     onClick={handleDelete}
                   >
                     Delete

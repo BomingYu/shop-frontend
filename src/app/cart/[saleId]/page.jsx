@@ -5,6 +5,7 @@ import { useUserContext } from "@/Contexts/UserContext";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Page({ params }) {
   const { user } = useUserContext();
@@ -12,6 +13,7 @@ export default function Page({ params }) {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const getUserCartInThisCart = async () => {
@@ -29,6 +31,7 @@ export default function Page({ params }) {
   const handleOrderButton = () => {
     console.log(sale);
     console.log(cartItems);
+    router.push(`/order/${params.saleId}`);
   };
 
   const calculateTotal = () => {

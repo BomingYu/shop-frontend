@@ -150,7 +150,7 @@ export default function CartItemCard({
           </button>
         )}
         <button
-          className="p-1 font-semibold rounded-full text-gray-200 bg-red-700"
+          className="p-1 font-semibold rounded-full text-white bg-red-700"
           onClick={handleDelete}
         >
           Delete
