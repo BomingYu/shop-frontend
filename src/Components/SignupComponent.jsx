@@ -4,37 +4,44 @@ import Link from "next/link";
 import { useState } from "react";
 import WarningComponent from "./Sundries/WarningComponent";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function SignupComponent() {
   const [uName, setUName] = useState("");
   const [email, setEmail] = useState("");
+  const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
   const [rePword, setRePword] = useState("");
 
   const [info, setInfo] = useState("");
   const [warningIsOpen, setWarningIsOpen] = useState(false);
 
-  const handleSignUp = async(e) => {
-    e.preventDefault();
-    if (uName !== "" && email !== "" && password !== "" && rePword !== "") {
-        try{
-            let formData = {
-                userName: uName,
-                email: email,
-                password: password,
-                rePassword: rePword,
-              };
-        
-              console.log(formData);
+  const router = useRouter();
 
-              const response = await axios.post("http://localhost:5006/api/account/register" , formData);
-              const resData = response.data;
-              console.log(resData);
-        }
-        catch(error){
-            console.log(error);
-        }
-      
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    if (uName !== "" && email !== "" && mobile!=="" && password !== "" && rePword !== "") {
+      try {
+        let formData = {
+          userName: uName,
+          email: email,
+          password: password,
+          rePassword: rePword,
+          phoneNumber: mobile,
+        };
+
+        console.log(formData);
+
+        const response = await axios.post(
+          "http://localhost:5006/api/account/register",
+          formData
+        );
+        const resData = response.data;
+        console.log(resData);
+        router.push("/");
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       setInfo("Form is not completed!");
       setWarningIsOpen(true);
@@ -81,6 +88,20 @@ export default function SignupComponent() {
             setEmail(e.target.value);
           }}
           placeholder="Email"
+        />
+      </div>
+      <div className="flex items-center space-x-3">
+        <span className="w-32 text-right">Mobile</span>
+        <input
+          type="text"
+          name="mobile"
+          id="mobile"
+          className="dark:text-black rounded-full w-48 h-7 p-2 text-md"
+          value={mobile}
+          onChange={(e) => {
+            setMobile(e.target.value);
+          }}
+          placeholder="Mobile Number"
         />
       </div>
       <div className="flex items-center space-x-3">
