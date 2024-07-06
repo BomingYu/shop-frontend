@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState , useEffect } from "react";
 import { useUserContext } from "@/Contexts/UserContext";
+import OrderDetailCard from "@/Components/Customer/order/OrderDetailCard";
 
 export default function Page({params}){
     const router = useRouter();
@@ -29,8 +30,13 @@ export default function Page({params}){
         <div className="flex flex-col items-center">
             <h1 className="text-5xl font-bold">Order Detail</h1>
             {loading ? (<h1 className="text-4xl font-bold">Loading...</h1>) : (
-                <button onClick={testButton}>Test</button>
+                <div className="flex flex-col items-center">
+                    <OrderDetailCard />
+                    <button onClick={testButton}>Test</button>
+                </div>
+                
             )}
+
         </div>
     </main>);
 }
