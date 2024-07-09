@@ -70,6 +70,7 @@ export default function SaleItemCard({
     );
     console.log(response.data);
     stateChanging();
+    setQuantChanged(false);
   };
 
   const handleDelete = async () => {
