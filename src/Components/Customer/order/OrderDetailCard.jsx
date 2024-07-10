@@ -104,7 +104,7 @@ export default function OrderDetailCard({ items }) {
                   showLocation === 1
                     ? "border-4 font-black bg-green-200 dark:bg-gray-300"
                     : "font-semibold"
-                }`}
+                } hover:border-4`}
                 onClick={handleGreenPatchButton}
               >
                 {showLocation === 1 && <LuMapPin />}
@@ -115,7 +115,7 @@ export default function OrderDetailCard({ items }) {
                   showLocation === 2
                     ? "border-4 font-black bg-green-200 dark:bg-gray-300"
                     : "font-semibold"
-                }`}
+                } hover:border-4`}
                 onClick={handleBormanFreshButton}
               >
                 {showLocation === 2 && <LuMapPin />}
