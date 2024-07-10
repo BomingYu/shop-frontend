@@ -41,12 +41,44 @@ export default function OrderDetailCard({ items }) {
       name : user.userName,
       appUserId : user.id
     };
-
     console.log(orderDetail);
+
+    const orderItems = items.map(item => {
+      return{
+        price: item.cartItems[0].price,
+        quatity: item.cartItems[0].quantity,
+        subtotal: item.cartItems[0].total,
+        salesItemId: item.cartItems[0].salesItemId,
+        orderId: 0,
+        cartId: item.cartItems[0].id,
+      }
+    });
+    console.log(orderItems);
+
+    const orderData = {
+      orderDetail : orderDetail,
+      orderItems : orderItems,
+    };
+    console.log(orderData);
   };
 
   const componentTestButton = () => {
-    console.log(total);
+    console.log(items);
+
+    const userOrderItems = items.map(item => {
+      return{
+        price: item.cartItems[0].price,
+        quatity: item.cartItems[0].quantity,
+        subtotal: item.cartItems[0].total,
+        salesItemId: item.cartItems[0].salesItemId,
+        orderId: 0,
+        cartId: item.cartItems[0].id,
+      }
+    });
+
+    //setOrderItems(userOrderItems);
+
+    console.log(userOrderItems);
   };
 
   const handleGreenPatchButton = () => {
