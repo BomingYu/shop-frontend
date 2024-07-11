@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { LuMapPin } from "react-icons/lu";
 import { useUserContext } from "@/Contexts/UserContext";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function OrderDetailCard({ items }) {
   const { user } = useUserContext();
@@ -14,6 +16,8 @@ export default function OrderDetailCard({ items }) {
   const [diffContact, setDiffContact] = useState(false);
   const [contact, setContact] = useState("");
 
+  const router = useRouter();
+
   useEffect(() => {
     const total = items.reduce((sum, item) => {
       if (item && item.cartItems) {
@@ -25,7 +29,7 @@ export default function OrderDetailCard({ items }) {
     setLoading(false);
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (showLocation === 0) {
       alert("Please select a pickup location.");
       return;
@@ -35,45 +39,61 @@ export default function OrderDetailCard({ items }) {
       return;
     }
     const orderDetail = {
-      total : total,
-      pickLocation : location,
-      contact : diffContact ? contact : user.phoneNumber,
-      name : user.userName,
-      appUserId : user.id
+      total: total,
+      pickLocation: location,
+      contact: diffContact ? contact : user.phoneNumber,
+      name: user.userName,
+      appUserId: user.id,
     };
     console.log(orderDetail);
 
-    const orderItems = items.map(item => {
-      return{
+    const orderItems = items.map((item) => {
+      return {
         price: item.cartItems[0].price,
         quatity: item.cartItems[0].quantity,
         subtotal: item.cartItems[0].total,
         salesItemId: item.cartItems[0].salesItemId,
         orderId: 0,
         cartId: item.cartItems[0].id,
-      }
+      };
     });
     console.log(orderItems);
 
     const orderData = {
-      orderDetail : orderDetail,
-      orderItems : orderItems,
+      orderDetail: orderDetail,
+      orderItems: orderItems,
     };
     console.log(orderData);
+    try {
+      const response = await axios.post(
+        "http://localhost:5006/api/orders/placeOrder",
+        orderData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const orderRes = response.data;
+      console.log(orderRes.id);
+      router.push(`/successful/${orderRes.id}`);
+    } catch (error) {
+      console.error("Failed to submit order:", error);
+    }
   };
 
   const componentTestButton = () => {
     console.log(items);
 
-    const userOrderItems = items.map(item => {
-      return{
+    const userOrderItems = items.map((item) => {
+      return {
         price: item.cartItems[0].price,
         quatity: item.cartItems[0].quantity,
         subtotal: item.cartItems[0].total,
         salesItemId: item.cartItems[0].salesItemId,
         orderId: 0,
         cartId: item.cartItems[0].id,
-      }
+      };
     });
 
     //setOrderItems(userOrderItems);

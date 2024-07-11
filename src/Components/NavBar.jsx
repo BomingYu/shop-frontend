@@ -11,12 +11,12 @@ export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, setUser } = useUserContext();
   const router = useRouter();
-  const [isLoggedIn , setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     const objProps = Object.keys(user);
-    setIsLoggedIn(objProps.length !==0);
-  },[user]);
+    setIsLoggedIn(objProps.length !== 0);
+  }, [user]);
 
   const isLogin = () => {
     const objProps = Object.keys(user);
@@ -70,11 +70,18 @@ export default function NavBar() {
                 <Link href="/">Sales</Link>
               </li>
               {isLoggedIn && (
-                <li>
-                  <Link href="/cart">
-                    <IoCartOutline size="1.7em" />
-                  </Link>
-                </li>
+                <>
+                  <li>
+                    <Link href="/cart">
+                      <IoCartOutline size="1.7em" />
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/myOrders">
+                      My Orders
+                    </Link>
+                  </li>
+                </>
               )}
               {isLoggedIn && (
                 <li>
@@ -91,11 +98,11 @@ export default function NavBar() {
                   <Link href="/signup">SignUp</Link>
                 </li>
               )}
-              {/* {isLogin() && user.theRole ==="admin" && ( */}
+              {isLogin() && user.theRole === "admin" && (
                 <li>
                   <Link href="/admin">Admin</Link>
                 </li>
-              {/* )} */}
+              )}
             </ul>
           </div>
         </div>
