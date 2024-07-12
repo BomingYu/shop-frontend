@@ -31,7 +31,7 @@ export default function Page({params}){
             <h1 className="text-5xl font-bold">Order Detail</h1>
             {loading ? (<h1 className="text-4xl font-bold">Loading...</h1>) : (
                 <div className="flex flex-col items-center">
-                    <OrderDetailCard items={cartItems}/>
+                    <OrderDetailCard items={cartItems} saleId={params.saleId}/>
                     <button onClick={testButton}>Test</button>
                 </div>
             )}

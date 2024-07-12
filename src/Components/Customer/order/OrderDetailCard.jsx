@@ -4,11 +4,12 @@ import { useUserContext } from "@/Contexts/UserContext";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-export default function OrderDetailCard({ items }) {
+export default function OrderDetailCard({ items , saleId}) {
   const { user } = useUserContext();
 
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [note , setNote] = useState("");
 
   const [location, setLocation] = useState("");
   const [showLocation, setShowLocation] = useState(0);
@@ -44,6 +45,8 @@ export default function OrderDetailCard({ items }) {
       contact: diffContact ? contact : user.phoneNumber,
       name: user.userName,
       appUserId: user.id,
+      note: note,
+      saleId: saleId
     };
     console.log(orderDetail);
 
@@ -83,22 +86,8 @@ export default function OrderDetailCard({ items }) {
   };
 
   const componentTestButton = () => {
-    console.log(items);
-
-    const userOrderItems = items.map((item) => {
-      return {
-        price: item.cartItems[0].price,
-        quatity: item.cartItems[0].quantity,
-        subtotal: item.cartItems[0].total,
-        salesItemId: item.cartItems[0].salesItemId,
-        orderId: 0,
-        cartId: item.cartItems[0].id,
-      };
-    });
-
-    //setOrderItems(userOrderItems);
-
-    console.log(userOrderItems);
+    console.log(note);
+    console.log(saleId);
   };
 
   const handleGreenPatchButton = () => {
@@ -175,6 +164,10 @@ export default function OrderDetailCard({ items }) {
                 Use a different contact number than the registered.
               </span>
             </div>
+          </div>
+
+          <div>
+            <textarea className="w-[250px] rounded-lg p-1 text-sm" name="note" id="note" value={note} placeholder="Note" onChange={(e)=>{setNote(e.target.value)}}></textarea>
           </div>
 
           <div className="flex items-center w-full justify-center space-x-5">
