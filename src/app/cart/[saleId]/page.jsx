@@ -42,20 +42,28 @@ export default function Page({ params }) {
     return sum;
   };
 
+  const countItems = () => {
+    let count = 0;
+    for(let i=0 ; i<cartItems.length ; i++){
+      count += cartItems[i].cartItems[0].quantity;
+    }
+    return count;
+  }
+
+  const handleTest = () => {
+    console.log(cartItems);
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-lightRGBA dark:bg-darkRGBA font-bodyFont">
+    <main className="flex min-h-screen flex-col items-center justify-between pt-24 bg-lightRGBA dark:bg-darkRGBA font-bodyFont">
       {loading ? (
         <h1 className="text-5xl font-bold">Loading...</h1>
       ) : (
-        <div className="flex flex-col items-center justify-center space-y-3">
+        <div className="flex flex-col items-center justify-center space-y-3 w-[360px]">
           <h1 className="text-4xl font-bold">{sale.name}</h1>
           {cartItems.length !== 0 ? (
-            <span className="">
-              You have{" "}
-              <span className="font-bold text-xl">
-                {cartItems.length}
-              </span>{" "}
-              item in this sale.
+            <span className="mx-3">
+              You have a total of <span className="font-bold text-xl">{countItems()}</span> items, consisting of <span className="font-bold text-xl">{cartItems.length}</span> different products in this sale.
             </span>
           ) : (
             <span>
@@ -73,11 +81,11 @@ export default function Page({ params }) {
             <div className="w-full flex items-center justify-between">
               <button
                 onClick={handleOrderButton}
-                className="p-2 text-lg font-semibold rounded-full text-gray-100 bg-lime-950"
+                className="p-2 mx-3 text-lg font-semibold rounded-full text-gray-100 bg-lime-950"
               >
                 Proceed to Checkout
               </button>
-              <span className="text-right px-3 font-semibold text-lg">
+              <span className="text-right px-3 font-semibold text-lg mx-3">
                 Total :{" "}
                 <span className="text-xl font-bold underline decoration-double underline-offset-4">
                   ${calculateTotal()}
@@ -98,6 +106,7 @@ export default function Page({ params }) {
               handleRefresh={() => setStatus(!status)}
             />
           ))}
+          <button onClick={handleTest}>Test</button>
         </div>
       )}
     </main>

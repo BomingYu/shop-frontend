@@ -20,7 +20,7 @@ export default function Page({ params }) {
   },[]);
 
   const handleTestButton = () => {
-    console.log(orderItems);
+    console.log(order);
   }
 
   return (

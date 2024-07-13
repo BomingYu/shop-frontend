@@ -23,10 +23,6 @@ export default function Page() {
     getMyOrders();
   }, []);
 
-  const handleTest = () => {
-    console.log(orders);
-  };
-
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-lightRGBA dark:bg-darkRGBA font-bodyFont">
       <div className="flex flex-col items-center">
@@ -38,7 +34,6 @@ export default function Page() {
             {orders.map(order=>(
                 <UserOrderCard key={order.id} id={order.id} location={order.pickLocation} status={order.status} total={order.total}/>
             ))}
-            <button onClick={handleTest}>Test</button>
           </div>
         )}
       </div>
