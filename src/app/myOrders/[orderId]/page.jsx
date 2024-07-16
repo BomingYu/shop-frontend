@@ -58,7 +58,7 @@ export default function Page({ params }) {
         <div className="flex flex-col items-center">
           <h1 className="text-5xl font-bold mb-10">{params.orderId}</h1>
           <UserOrderDetailCard order={order} />
-          <div className="flex space-x-12">
+          <div className="flex space-x-12 mt-5">
             <Link
               className="bg-gray-700 p-1 rounded-full font-semibold text-gray-200"
               href="/myOrders"
