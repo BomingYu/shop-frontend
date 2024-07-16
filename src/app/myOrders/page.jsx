@@ -22,7 +22,6 @@ export default function Page() {
     };
     getMyOrders();
   }, []);
-
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-lightRGBA dark:bg-darkRGBA font-bodyFont">
       <div className="flex flex-col items-center">
@@ -32,10 +31,11 @@ export default function Page() {
         ) : (
           <div className="flex flex-col items-center space-y-2">
             {orders.map(order=>(
-                <UserOrderCard key={order.id} id={order.id} location={order.pickLocation} status={order.status} total={order.total}/>
+                <UserOrderCard key={order.id} id={order.id} location={order.pickLocation} status={order.status} total={order.total} saleStatus={order.sale.status}/>
             ))}
           </div>
         )}
+        <button onClick={()=>{console.log(orders)}}>Test</button>
       </div>
     </main>
   );

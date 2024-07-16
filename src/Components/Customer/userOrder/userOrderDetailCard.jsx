@@ -9,6 +9,15 @@ export default function UserOrderDetailCard({ order }) {
     }
     return "680 Gray Street";
   };
+  const shownStatus = () => {
+    if(order.sale.status === "Active"){
+        return "Created";
+    }
+    if(order.status === "Cancelled"){
+        return "Cancelled";
+    }
+    return order.sale.status;
+}
   return (
     <div className="flex flex-col md:flex-row gap-5 items-center">
       <div>
@@ -36,11 +45,11 @@ export default function UserOrderDetailCard({ order }) {
           <li className="flex items-center space-x-2">
             <span className="w-[120px] text-right">Status :</span>
             <span className={`w-[170px] overflow-hidden text-ellipsis whitespace-nowrap font-semibold 
-              ${order.status === "Cancelled" && `text-gray-700 dark:text-gray-800`}
-              ${order.status === "Pending" && `text-blue-600 dark:text-blue-800`}
-              ${order.status === "Ready to Pickup" && `text-green-600 dark:text-lime-900`}
-              ${order.status === "Expired" && `text-red-700 dark:text-red-800`}`}>
-              {order.status}
+              ${shownStatus() === "Cancelled" && `text-gray-700 dark:text-gray-800`}
+              ${shownStatus() === "Created" && `text-blue-600 dark:text-blue-800`}
+              ${shownStatus() === "Ready to Pickup" && `text-green-600 dark:text-lime-900`}
+              ${shownStatus() === "Expired" && `text-red-700 dark:text-red-800`}`}>
+              {shownStatus()}
             </span>
           </li>
           <li className="w-full flex items-center space-x-2">

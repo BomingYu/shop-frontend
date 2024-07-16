@@ -10,9 +10,9 @@ export default function CartSaleCard({id, name , endAt}){
     
     return(
     <button className="border dark:border-gray-100 border-gray-500 p-1 rounded-md hover:border-yellow-500" onClick={handleButtonClick}>
-        <ul>
+        <ul className="flex flex-col sm:flex-row space-x-3 p-1">
             <li className="font-semibold">{name}</li>
-            <li>End At: <span className="font-semibold">{endAt}</span></li>
+            <li>End to{" "} <span className="font-semibold">{endAt}</span></li>
         </ul>
     </button>
     );

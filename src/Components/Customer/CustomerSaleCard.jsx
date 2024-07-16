@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 
-export default function CustomerSaleCard({id, name, start, end }) {
+export default function CustomerSaleCard({ id, name, end }) {
   const router = useRouter();
 
   const convertDate = (date) => {
@@ -12,15 +12,19 @@ export default function CustomerSaleCard({id, name, start, end }) {
   };
   const handleSaleSelect = () => {
     console.log(id);
-    router.push("/sale/"+id);
-  }
+    router.push("/sale/" + id);
+  };
   return (
     <button onClick={handleSaleSelect}>
-      <ul className="flex lg:space-x-9 md:space-x-5 sm:space-x-3 xs:space-x-2 text-lg items-center justify-center border dark:border-gray-100 border-gray-500 p-1 rounded-md hover:border-yellow-500">
-        <li className="w-24 text-right truncate">{name}</li>
-        <li className="w-24">{start}</li>
-        <li className="text-gray-600 dark:text-amber-500">TO</li>
-        <li className="w-24">{convertDate(end)}</li>
+      <ul className="flex flex-col md:flex-row md:flex-wrap lg:space-x-9 sm:space-y-2 xs:space-y-2 items-center justify-center border dark:border-gray-100 border-gray-500 p-1 rounded-md hover:border-yellow-500">
+        <div className="flex text-xl space-x-2 items-center">
+          <li className="w-[180px] truncate">{name}</li>
+          <li className="w-20 font-semibold text-lime-800 dark:text-teal-800">Active</li>
+        </div>
+        <div className="flex space-x-3 items-center">
+          <li className="text-gray-900">End To</li>
+          <li className="w-24">{convertDate(end)}</li>
+        </div>
       </ul>
     </button>
   );

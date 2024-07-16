@@ -98,11 +98,11 @@ export default function NavBar() {
                   <Link href="/signup">SignUp</Link>
                 </li>
               )}
-              {isLogin() && user.theRole === "admin" && (
+              {/* {isLogin() && user.theRole === "admin" && ( */}
                 <li>
                   <Link href="/admin">Admin</Link>
                 </li>
-              )}
+              {/* )} */}
             </ul>
           </div>
         </div>

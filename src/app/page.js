@@ -31,9 +31,10 @@ export default function Home() {
           Loading...
         </h1>) : (
         <div className="flex flex-col space-y-1">
-          {validSales.map(sale=>(<CustomerSaleCard key={sale.id} id={sale.id} name={sale.name} start={sale.startAt} end={sale.endAt}/>))}
+          {validSales.map(sale=>(<CustomerSaleCard key={sale.id} id={sale.id} name={sale.name} end={sale.endAt}/>))}
         </div>
         )}
+        <button onClick={()=>{console.log(validSales)}}>Test</button>
       </div>
     </main>
   );
