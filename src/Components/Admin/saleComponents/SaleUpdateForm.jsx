@@ -10,6 +10,7 @@ export default function SaleUpdateForm({
   available,
   endAt,
   handleCancel,
+  status
 }) {
   const [nameValue, setName] = useState(name);
   const [validSale, setValidSale] = useState(available);
@@ -46,6 +47,7 @@ export default function SaleUpdateForm({
         isAvailable: validSale,
         //startAt: start,
         endAt: end,
+        status: status
       };
       const response = await axios.put(
         "http://localhost:5006/api/sales/" + id,
@@ -59,6 +61,7 @@ export default function SaleUpdateForm({
       console.log(formData);
       console.log(response.data);
       handleCancel();
+      window.location.reload();
   };
 
   const handleCancelButton = () => {

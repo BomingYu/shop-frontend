@@ -37,6 +37,7 @@ export default function Page() {
               //startAt={sale.startAt}
               endAt={sale.endAt}
               stateChange={()=>{setPageState(!pageState)}}
+              status={sale.status}
             />
           ))
         )}
