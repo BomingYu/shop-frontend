@@ -8,6 +8,7 @@ import Link from "next/link";
 export default function Page() {
   const [sales, setSales] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [pageState , setPageState] = useState(true);
 
   useEffect(() => {
     const getAllSale = async () => {
@@ -17,7 +18,7 @@ export default function Page() {
       setLoading(false);
     };
     getAllSale();
-  }, [sales]);
+  }, [pageState]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-lightRGBA dark:bg-darkRGBA">
@@ -33,11 +34,13 @@ export default function Page() {
               saleId={sale.id}
               name={sale.name}
               available={sale.isAvailable}
-              startAt={sale.startAt}
+              //startAt={sale.startAt}
               endAt={sale.endAt}
+              stateChange={()=>{setPageState(!pageState)}}
             />
           ))
         )}
+        <button onClick={()=>{console.log(sales)}}>Test</button>
       </div>
     </main>
   );

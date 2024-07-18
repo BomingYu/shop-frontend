@@ -9,6 +9,7 @@ export default function AdminSalesItemCard({
   price,
   unit,
   imgPath,
+  stateChange
 }) {
   const [imgError, setImgError] = useState(false);
   //const [isEdit, setIsEdit] = useState(false);
@@ -24,6 +25,7 @@ export default function AdminSalesItemCard({
     );
     const resData = response.data;
     console.logresData;
+    stateChange();
   };
   return (
     <div className="w-72 h-72 flex items-center justify-center border m-1 rounded-lg font-bodyFont">

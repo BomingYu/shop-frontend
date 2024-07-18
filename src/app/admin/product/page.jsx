@@ -9,6 +9,7 @@ import { useUserContext } from "@/Contexts/UserContext";
 export default function Page() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [pageState , setPageState] = useState(true);
   const { user } = useUserContext();
 
   useEffect(() => {
@@ -27,7 +28,7 @@ export default function Page() {
       }
     };
     getAllProduct();
-  }, [products]);
+  }, [pageState]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-lightRGBA dark:bg-darkRGBA">
@@ -49,6 +50,7 @@ export default function Page() {
                 id={product.id}
                 imagePath={product.image}
                 name={product.name}
+                stateChange={()=>{setPageState(!pageState)}}
               />
             ))
           )}

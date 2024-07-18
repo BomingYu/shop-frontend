@@ -4,7 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useUserContext } from "@/Contexts/UserContext";
 
-export default function AdminProductCard({ id , imagePath, name, description }) {
+export default function AdminProductCard({ id , imagePath, name, description , stateChange }) {
   const [imgError, setImgError] = useState(false);
   const router = useRouter();
   const {user} = useUserContext();
@@ -25,6 +25,7 @@ export default function AdminProductCard({ id , imagePath, name, description }) 
       );
       console.log(response.data);
       router.push("/admin/product");
+      stateChange();
     }
     catch(error){
       console.log(error);
@@ -33,6 +34,7 @@ export default function AdminProductCard({ id , imagePath, name, description }) 
 
   const handleUpdateProduct = () => {
     router.push("/admin/product/update/"+id);
+    stateChange();
   }
 
   return (

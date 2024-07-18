@@ -9,6 +9,7 @@ export default function Page({ params }) {
   const [sale, setSale] = useState({});
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [pageState , setPageState] = useState(true);
 
   useEffect(() => {
     const getSaleById = async () => {
@@ -21,7 +22,7 @@ export default function Page({ params }) {
       setLoading(false);
     };
     getSaleById();
-  }, [items]);
+  }, [pageState]);
 
   const handleTestButton = () => {
     console.log(sale);
@@ -58,6 +59,7 @@ export default function Page({ params }) {
                 price={item.price}
                 unit={item.unit}
                 imgPath={item.product.image}
+                stateChange={()=>{setPageState(!pageState)}}
               />
             ))}
           </div>

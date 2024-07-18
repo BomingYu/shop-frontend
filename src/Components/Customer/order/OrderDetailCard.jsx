@@ -78,8 +78,8 @@ export default function OrderDetailCard({ items , saleId}) {
         }
       );
       const orderRes = response.data;
-      console.log(orderRes.id);
-      router.push(`/successful/${orderRes.id}`);
+      console.log(orderRes);
+      router.push(`/successful/${orderRes}`);
     } catch (error) {
       console.error("Failed to submit order:", error);
     }

@@ -8,45 +8,43 @@ export default function SaleUpdateForm({
   id,
   name,
   available,
-  startAt,
   endAt,
   handleCancel,
 }) {
   const [nameValue, setName] = useState(name);
   const [validSale, setValidSale] = useState(available);
-  const [start, setStart] = useState(startAt);
+  //const [start, setStart] = useState(startAt);
   const [end, setEnd] = useState(endAt);
 
   const [error, setError] = useState("");
   const [errorShow, setErrorShow] = useState(false);
 
-  const handleStartChange = (e) => {
-    if (end && e.target.value > end) {
-      setError("Start date cannot be later than end date");
-      setErrorShow(true);
-      setStart("");
-    } else {
-      setStart(e.target.value);
-    }
-  };
+  // const handleStartChange = (e) => {
+  //   if (end && e.target.value > end) {
+  //     setError("Start date cannot be later than end date");
+  //     setErrorShow(true);
+  //     setStart("");
+  //   } else {
+  //     setStart(e.target.value);
+  //   }
+  // };
 
   const handleEndChange = (e) => {
-    if (start && e.target.value < start) {
-      setError("End date cannot be earlier than start date");
-      setErrorShow(true);
-      setEnd("");
-    } else {
+    // if (start && e.target.value < start) {
+    //   setError("End date cannot be earlier than start date");
+    //   setErrorShow(true);
+    //   setEnd("");
+    // } else {
       setEnd(e.target.value);
-    }
+    //}
   };
 
   const handleUpdateSale = async (e) => {
     e.preventDefault();
-    if(start !== ""){
       const formData = {
         name: nameValue,
         isAvailable: validSale,
-        startAt: start,
+        //startAt: start,
         endAt: end,
       };
       const response = await axios.put(
@@ -61,11 +59,6 @@ export default function SaleUpdateForm({
       console.log(formData);
       console.log(response.data);
       handleCancel();
-    }
-    else{
-      setError("Start date cannot be empty");
-      setErrorShow(true);
-    }
   };
 
   const handleCancelButton = () => {
@@ -107,15 +100,6 @@ export default function SaleUpdateForm({
           }}
         />
       )}
-      <div className="flex space-x-3">
-        <span className="w-24 text-right">Start</span>
-        <input
-          type="date"
-          className="rounded-full p-1"
-          value={start}
-          onChange={handleStartChange}
-        />
-      </div>
       <div className="flex space-x-3">
         <span className="w-24 text-right">End</span>
         <input

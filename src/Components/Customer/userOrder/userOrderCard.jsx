@@ -9,11 +9,14 @@ export default function UserOrderCard({id , location , status , total , saleStat
     };
 
     const shownStatus = () => {
-        if(saleStatus === "Active"){
-            return "Created";
-        }
         if(status === "Cancelled"){
             return "Cancelled";
+        }
+        if(status === "Pickedup"){
+            return "Pickedup";
+        }
+        if(saleStatus === "Active"){
+            return "Created";
         }
         return saleStatus;
     }
@@ -24,10 +27,11 @@ export default function UserOrderCard({id , location , status , total , saleStat
                 <li className="w-[80px] items-center justify-center">{id}</li>
                 <li className="w-[150px] items-center justify-center">{location}</li>
                 <li className={`w-[130px] items-center justify-center font-semibold
-                    ${shownStatus() === "Cancelled" && `text-gray-700 dark:text-gray-800`}
+                    ${shownStatus() === "Cancelled" && `text-gray-600 dark:text-gray-700`}
                     ${shownStatus() === "Created" && `text-blue-600 dark:text-blue-800`}
                     ${shownStatus() === "Ready to Pickup" && `text-emerald-700 dark:text-emerald-800`}
-                    ${shownStatus() === "Expired" && `text-red-700 dark:text-red-800`}`}>{shownStatus()}</li>
+                    ${shownStatus() === "Expired" && `text-red-700 dark:text-red-800`}
+                    ${shownStatus() === "Pickedup" && `text-black`}`}>{shownStatus()}</li>
                 <li className="w-[80px] items-center justify-center font-bold"><span className="text-lg">$</span>{total.toFixed(2)}</li>
             </ul>
         </button>

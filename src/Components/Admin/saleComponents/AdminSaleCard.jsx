@@ -6,7 +6,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-export default function AdminSaleCard({ saleId, name, available, startAt, endAt }) {
+export default function AdminSaleCard({ saleId, name, available , endAt , stateChange}) {
   const [isEdit, setIsEdit] = useState(false);
   const router = useRouter();
 
@@ -32,6 +32,7 @@ export default function AdminSaleCard({ saleId, name, available, startAt, endAt 
         "http://localhost:5006/api/sales/" + saleId
       );
       router.refresh();
+      stateChange();
     } catch (error) {
       console.log(error);
     }
@@ -44,7 +45,7 @@ export default function AdminSaleCard({ saleId, name, available, startAt, endAt 
           id={saleId}
           name={name}
           available={available}
-          startAt={startAt}
+          //startAt={startAt}
           endAt={endAt}
           handleCancel={() => setIsEdit(!isEdit)}
         />
@@ -63,10 +64,10 @@ export default function AdminSaleCard({ saleId, name, available, startAt, endAt 
             {convertActive(available)}
           </li>
           <li className="lg:text-2xl md:text-lg sm:text-sm xs:text-sm w-36">
-            {convertDate(startAt)}
+            {/* {convertDate(startAt)} */}
           </li>
           <li className="lg:text-2xl md:text-lg sm:text-sm xs:text-sm w-8">
-            TO
+            To
           </li>
           <li
             className={`lg:text-2xl md:text-lg sm:text-sm xs:text-sm w-36 ${
@@ -80,6 +81,7 @@ export default function AdminSaleCard({ saleId, name, available, startAt, endAt 
               className="bg-gray-400 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-1 text-lg font-bold rounded-full font-bodyFont"
               onClick={() => {
                 setIsEdit(!isEdit);
+                stateChange();
               }}
             >
               Edit
